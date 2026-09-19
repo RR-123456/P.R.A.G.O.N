@@ -1,8 +1,5 @@
 # MOSS × P.R.A.G.O.N
 
-Moss is now part of PRAGON. **Nothing in PRAGON was removed, edited or moved** —
-`diff -rq` against the original tree reports zero modified files. The integration
-is entirely new files plus runtime wrapping.
 
 ---
 
@@ -10,7 +7,7 @@ is entirely new files plus runtime wrapping.
 
 | Path | Purpose |
 |---|---|
-| `moss.py` | Your file, byte-for-byte unchanged, at the project root |
+| `moss.py` | Your file, at the project root |
 | `pragon_moss/bridge.py` | Blocking, never-raising facade over the async engine |
 | `pragon_moss/integration.py` | Wraps PRAGON's processors (wrap, never replace) |
 | `pragon_moss/service.py` | Optional HTTP surface on `:8090` |
@@ -20,8 +17,8 @@ is entirely new files plus runtime wrapping.
 | `plugins/moss_recall.py` | Voice tool: retrieve session context |
 | `plugins/moss_status.py` | Voice tool: real latency/cache/backend health |
 
-No new dependencies. Moss is stdlib + sqlite3; the plugins ride PRAGON's own
-loader; the optional service uses the fastapi/uvicorn already in
+No new dependencies. Moss ,stdlib + sqlite3; the plugins ride PRAGON's own
+loader; the optional service uses the fastapi/uvicorn ,moss in
 `requirements.txt`.
 
 ---
@@ -48,7 +45,7 @@ python moss.py benchmark --n 500        # real p50/p95/p99 on your hardware
 
 ---
 
-## What Moss actually does in each path
+##  Moss additional works
 
 **`_friday_processor`** — FRIDAY rebuilds a two-message list every turn, so she
 has no memory between turns; whatever RAG context the frontend folded into `text`
