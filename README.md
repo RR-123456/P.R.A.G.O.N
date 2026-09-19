@@ -52,7 +52,7 @@ The MOSS layer adds session-aware context and grounding without replacing the or
 - **Guardrails**: Policy checks run before risky actions (`warn` or `enforce` modes).
 *See [`MOSS_INTEGRATION.md`](file:///D:/pragon_new/MOSS_INTEGRATION.md) for deeper details.*
 
-### 🎙️ LiveKit Voice Agent
+###  LiveKit Voice Agent
 A real-time voice pipeline injecting MOSS context into spoken input. 
 - **Low Latency**: Fast retrieval budget (default 0.35s).
 - **Seamless Bridging**: Connects into the UI via room tokens.
