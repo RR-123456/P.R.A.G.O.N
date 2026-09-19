@@ -8,7 +8,7 @@ skill-pack sharing).
 ## 1. Shared-database anti-pattern → unified Data Access Layer
 
 **New:** `consciousness/data_access.py` — a process-wide registry (`dal`)
-that caches one SQLite connection and one ChromaDB client per resolved
+that caches moss, SQLite connection and one ChromaDB client per resolved
 path. Any two components asking for the same file now get the *same*
 handle instead of opening independent ones.
 
