@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<title>Logesh | Full-Stack Developer — style reference</title>
+<style>
+:root {
+    --bg-primary: #090d16; --bg-secondary: #0f172a; --bg-tertiary: #1e293b;
+    --text-primary: #f8fafc; --text-secondary: #94a3b8;
+    --accent: #6366f1; --accent-hover: #4f46e5; --accent-light: rgba(99, 102, 241, 0.1);
+    --border-color: #1e293b; --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+html.light { --bg-primary: #f8fafc; --bg-secondary: #ffffff; --bg-tertiary: #f1f5f9; --text-primary: #0f172a; --text-secondary: #475569; --accent: #4f46e5; --border-color: #e2e8f0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-family: var(--font-sans); background-color: var(--bg-primary); color: var(--text-primary); transition: background-color .3s ease, color .3s ease; }
+body { overflow-x: hidden; line-height: 1.6; }
+.container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.section-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 16px; text-align: center; background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 28px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: .95rem; }
+.btn-primary { background-color: var(--accent); color: #fff; }
+.btn-secondary { border: 2px solid var(--border-color); color: var(--text-primary); }
+.badge { display: inline-block; padding: 4px 12px; border-radius: 9999px; font-size: .8rem; font-weight: 600; background-color: var(--accent-light); color: var(--accent); border: 1px solid rgba(99,102,241,0.2); }
+header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background-color: rgba(9,13,22,0.8); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color); }
+.nav-container { display: flex; align-items: center; justify-content: space-between; height: 80px; }
+.logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; }
+.logo span { color: var(--accent); }
+.hero { position: relative; min-height: 100vh; display: flex; align-items: center; padding-top: 120px; }
+.hero-title { font-size: 4rem; font-weight: 800; line-height: 1.1; margin-bottom: 24px; letter-spacing: -1px; }
+.hero-title span { background: linear-gradient(135deg, var(--accent) 0%, #a855f7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero-desc { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 40px; max-width: 540px; }
+.tech-tag { background-color: var(--bg-secondary); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 8px; font-size: .9rem; font-weight: 500; }
+.skill-card { background-color: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; }
+</style>
+</head>
+<body>
+<header><div class="container nav-container">
+  <a href="#hero" class="logo">Logesh<span>.</span></a>
+  <nav style="display:flex;gap:32px;">
+    <a href="#about" style="color:var(--text-secondary);">About</a>
+    <a href="#skills" style="color:var(--text-secondary);">Skills</a>
+    <a href="#contact" style="color:var(--text-secondary);">Contact</a>
+  </nav>
+</div></header>
+<section id="hero" class="hero">
+  <div class="container">
+    <div class="badge" style="margin-bottom:20px;">Available for Freelance & Full-time Roles</div>
+    <h1 class="hero-title">Hi, I'm <span>Logesh</span>.<br>Full-Stack Developer.</h1>
+    <p class="hero-desc">I craft scalable web applications, sleek user interfaces, and robust backend systems with modern technologies.</p>
+    <div style="display:flex;gap:16px;">
+      <a href="#projects" class="btn btn-primary">View My Work</a>
+      <a href="#contact" class="btn btn-secondary">Let's Connect</a>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:40px;">
+      <div class="tech-tag">React</div><div class="tech-tag">Node.js</div><div class="tech-tag">TypeScript</div>
+    </div>
+  </div>
+</section>
+<section id="skills" style="padding:100px 0;">
+  <div class="container">
+    <h2 class="section-title">Technical Expertise</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px;margin-top:40px;">
+      <div class="skill-card"><div class="skill-name" style="font-weight:700;font-size:1.1rem;">React / Next.js</div></div>
+      <div class="skill-card"><div class="skill-name" style="font-weight:700;font-size:1.1rem;">TypeScript</div></div>
+      <div class="skill-card"><div class="skill-name" style="font-weight:700;font-size:1.1rem;">Node.js / Express</div></div>
+    </div>
+  </div>
+</section>
+<footer style="background-color:var(--bg-secondary);border-top:1px solid var(--border-color);padding:60px 0;">
+  <div class="container" style="color:var(--text-secondary);font-size:.9rem;">&copy; 2026 Logesh. All rights reserved.</div>
+</footer>
+</body>
+</html>

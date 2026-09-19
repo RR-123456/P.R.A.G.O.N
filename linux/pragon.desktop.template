@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=P.R.A.G.O.N
+Comment=We build. You grow.
+Exec=python3 "__PROJECT_DIR__/pragon_main.py"
+Path=__PROJECT_DIR__
+Icon=__PROJECT_DIR__/assets/pragon_icon_256.png
+Terminal=false
+Categories=Utility;

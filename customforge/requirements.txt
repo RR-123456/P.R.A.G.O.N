@@ -1,0 +1,15 @@
+# PRAGON — C.U.S.T.O.M FORGE (core bridge server)
+Flask==3.1.3
+google-generativeai==0.8.3
+google-auth==2.35.0
+groq==1.6.0
+requests==2.32.3
+
+# Agent Builder (agent_builder/) — bundled and launched automatically by
+# main.py. Same Flask, plus:
+google-genai>=0.3.0
+send2trash>=1.8
+
+# Agent Builder's optional per-tool extras (image/pdf/docx/csv/pptx
+# processing, etc.) are NOT included here since most workflows won't need
+# all of them — see agent_builder/requirements-optional.txt.

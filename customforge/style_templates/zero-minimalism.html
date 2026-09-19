@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZERO — Absolute Minimalism</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Space Grotesk & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        cyan: {
+                            glow: '#00f0ff',
+                            dark: '#00b8cc'
+                        },
+                        void: {
+                            50: '#f9f9f9',
+                            100: '#f0f0f0',
+                            800: '#121212',
+                            900: '#0a0a0a',
+                            950: '#050505'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.2); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 240, 255, 0.5); }
+        .custom-cursor {
+            width: 8px; height: 8px; background-color: #00f0ff; border-radius: 50%;
+            position: fixed; transform: translate(-50%, -50%); pointer-events: none; z-index: 9999;
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+            box-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff;
+        }
+        .custom-cursor-outer {
+            width: 32px; height: 32px; border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 50%;
+            position: fixed; transform: translate(-50%, -50%); pointer-events: none; z-index: 9998;
+            transition: transform 0.1s ease-out, width 0.2s, height 0.2s, border-color 0.2s;
+        }
+        @media (pointer: fine) {
+            body { cursor: none; }
+            a, button, select, input, textarea, [role="button"] { cursor: none; }
+        }
+        .cursor-hover .custom-cursor { width: 16px; height: 16px; background-color: #ffffff; box-shadow: 0 0 15px #ffffff; }
+        .dark .cursor-hover .custom-cursor { background-color: #00f0ff; box-shadow: 0 0 15px #00f0ff; }
+        .cursor-hover .custom-cursor-outer { width: 48px; height: 48px; border-color: rgba(0, 240, 255, 0.8); background-color: rgba(0, 240, 255, 0.05); }
+        .text-stroke { -webkit-text-stroke: 1px currentColor; color: transparent; }
+    </style>
+</head>
+<body class="bg-white text-void-900 dark:bg-void-950 dark:text-white font-sans transition-colors duration-500 overflow-x-hidden selection:bg-cyan-glow selection:text-void-950">
+
+    <div class="custom-cursor hidden md:block" id="cursor-dot"></div>
+    <div class="custom-cursor-outer hidden md:block" id="cursor-circle"></div>
+
+    <div class="fixed inset-0 pointer-events-none z-0 opacity-[0.03] dark:opacity-[0.02] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+
+    <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b border-transparent" id="main-header">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="font-display text-2xl font-bold tracking-widest flex items-center gap-2 group cursor-trigger">
+                <span>ZERO</span>
+                <span class="w-2 h-2 rounded-full bg-cyan-glow animate-pulse shadow-[0_0_8px_#00f0ff]"></span>
+            </a>
+            <nav class="hidden md:flex items-center gap-10 text-sm tracking-wider font-medium uppercase">
+                <a href="#philosophy" class="hover:text-cyan-glow transition-colors cursor-trigger">Philosophy</a>
+                <a href="#mechanics" class="hover:text-cyan-glow transition-colors cursor-trigger">Mechanics</a>
+                <a href="#sandbox" class="hover:text-cyan-glow transition-colors cursor-trigger">The Void</a>
+                <a href="#connect" class="hover:text-cyan-glow transition-colors cursor-trigger">Connect</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-void-100 dark:hover:bg-void-900 transition-colors cursor-trigger" aria-label="Toggle theme">
+                    <svg id="theme-sun" class="w-5 h-5 hidden dark:block text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m2.828 0l-.707-.707M17.657 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
+                    <svg id="theme-moon" class="w-5 h-5 block dark:hidden text-void-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                </button>
+                <a href="#connect" class="hidden sm:inline-flex px-5 py-2 text-xs tracking-widest uppercase font-semibold border border-void-900 dark:border-white hover:bg-void-900 hover:text-white dark:hover:bg-white dark:hover:text-void-950 transition-all duration-300 cursor-trigger">
+                    Initiate
+                </a>
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-void-900 dark:text-white cursor-trigger" aria-label="Open Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="fixed inset-0 bg-white dark:bg-void-950 z-40 transform translate-x-full transition-transform duration-300 md:hidden flex flex-col justify-center items-center gap-8">
+            <button id="mobile-menu-close" class="absolute top-6 right-6 p-2 text-void-900 dark:text-white cursor-trigger">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <a href="#philosophy" class="mobile-link text-2xl font-display tracking-wider uppercase hover:text-cyan-glow transition-colors cursor-trigger">Philosophy</a>
+            <a href="#mechanics" class="mobile-link text-2xl font-display tracking-wider uppercase hover:text-cyan-glow transition-colors cursor-trigger">Mechanics</a>
+            <a href="#sandbox" class="mobile-link text-2xl font-display tracking-wider uppercase hover:text-cyan-glow transition-colors cursor-trigger">The Void</a>
+            <a href="#connect" class="mobile-link text-2xl font-display tracking-wider uppercase hover:text-cyan-glow transition-colors cursor-trigger">Connect</a>
+        </div>
+    </header>
+
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <canvas id="hero-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas>
+        <div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
+            <span class="inline-block px-3 py-1 text-xs tracking-[0.2em] uppercase border border-void-200 dark:border-void-800 rounded-full mb-6 bg-white/50 dark:bg-void-950/50 backdrop-blur-sm">
+                The Origin of Everything
+            </span>
+            <h1 class="font-display text-7xl sm:text-9xl md:text-[12rem] font-extrabold tracking-tighter leading-none select-none mb-6">
+                <span class="block text-void-950 dark:text-white transition-all duration-500 hover:tracking-wide">ZERO</span>
+                <span class="block text-stroke text-void-950 dark:text-white opacity-40 hover:opacity-100 transition-opacity duration-500">LIMITS</span>
+            </h1>
+            <p class="max-w-xl mx-auto text-base sm:text-lg text-void-600 dark:text-void-400 font-light tracking-wide mb-10">
+                A digital canvas built on absolute minimalism, stripping away the noise to unleash pure, unadulterated performance and design focus.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#sandbox" class="w-full sm:w-auto px-8 py-4 bg-void-950 text-white dark:bg-white dark:text-void-950 font-semibold tracking-wider uppercase text-xs hover:bg-cyan-glow hover:text-void-950 dark:hover:bg-cyan-glow dark:hover:text-void-950 transition-all duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] cursor-trigger">
+                    Enter The Void
+                </a>
+                <a href="#philosophy" class="w-full sm:w-auto px-8 py-4 border border-void-300 dark:border-void-800 hover:border-void-950 dark:hover:border-white tracking-wider uppercase text-xs font-semibold transition-all duration-300 cursor-trigger">
+                    Our Philosophy
+                </a>
+            </div>
+        </div>
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+            <span class="text-[10px] tracking-[0.3em] uppercase opacity-50">Scroll</span>
+            <div class="w-1.5 h-1.5 rounded-full bg-cyan-glow shadow-[0_0_8px_#00f0ff]"></div>
+        </div>
+    </section>
+
+    <section id="philosophy" class="py-32 relative border-t border-void-100 dark:border-void-900/50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                <div class="lg:col-span-5 lg:sticky lg:top-32">
+                    <span class="text-xs tracking-[0.3em] text-cyan-glow uppercase font-bold block mb-3">01 // CONCEPT</span>
+                    <h2 class="font-display text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
+                        The power of starting from absolute nothing.
+                    </h2>
+                    <p class="mt-6 text-void-600 dark:text-void-400 font-light leading-relaxed">
+                        In a world cluttered with infinite notifications, endless layouts, and heavy frameworks, we believe in the elegance of zero. By reducing everything to its core essence, we discover true clarity.
+                    </p>
+                </div>
+                <div class="lg:col-span-7 space-y-8">
+                    <div class="p-8 sm:p-10 border border-void-100 dark:border-void-900 bg-void-50/50 dark:bg-void-900/20 hover:border-cyan-glow/50 transition-all duration-500 group">
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="font-display text-3xl font-bold text-void-300 dark:text-void-800 group-hover:text-cyan-glow transition-colors">0.1</span>
+                            <div class="w-8 h-8 rounded-full border border-void-200 dark:border-void-800 flex items-center justify-center group-hover:border-cyan-glow transition-colors">
+                                <div class="w-1.5 h-1.5 rounded-full bg-void-400 dark:bg-void-600 group-hover:bg-cyan-glow transition-colors"></div>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">Absolute Clarity</h3>
+                        <p class="text-void-600 dark:text-void-400 font-light leading-relaxed">
+                            Every pixel must earn its right to exist. We remove the fluff, leaving only the essential interactions that elevate your digital experience.
+                        </p>
+                    </div>
+                    <div class="p-8 sm:p-10 border border-void-100 dark:border-void-900 bg-void-50/50 dark:bg-void-900/20 hover:border-cyan-glow/50 transition-all duration-500 group">
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="font-display text-3xl font-bold text-void-300 dark:text-void-800 group-hover:text-cyan-glow transition-colors">0.2</span>
+                            <div class="w-8 h-8 rounded-full border border-void-200 dark:border-void-800 flex items-center justify-center group-hover:border-cyan-glow transition-colors">
+                                <div class="w-1.5 h-1.5 rounded-full bg-void-400 dark:bg-void-600 group-hover:bg-cyan-glow transition-colors"></div>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">Infinite Speed</h3>
+                        <p class="text-void-600 dark:text-void-400 font-light leading-relaxed">
+                            Zero bloat means zero latency. Our architecture is stripped of heavy dependencies, delivering instant response times and fluid rendering.
+                        </p>
+                    </div>
+                    <div class="p-8 sm:p-10 border border-void-100 dark:border-void-900 bg-void-50/50 dark:bg-void-900/20 hover:border-cyan-glow/50 transition-all duration-500 group">
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="font-display text-3xl font-bold text-void-300 dark:text-void-800 group-hover:text-cyan-glow transition-colors">0.3</span>
+                            <div class="w-8 h-8 rounded-full border border-void-200 dark:border-void-800 flex items-center justify-center group-hover:border-cyan-glow transition-colors">
+                                <div class="w-1.5 h-1.5 rounded-full bg-void-400 dark:bg-void-600 group-hover:bg-cyan-glow transition-colors"></div>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">Pure Aesthetic</h3>
+                        <p class="text-void-600 dark:text-void-400 font-light leading-relaxed">
+                            Inspired by brutalism and Swiss design, our layouts rely on precise typography, bold grids, and subtle, interactive accents.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 border-t border-void-100 dark:border-void-900/50 bg-white dark:bg-void-950">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <span class="font-display font-bold tracking-widest text-lg">ZERO</span>
+                <span class="text-xs text-void-400 font-mono">// Absolute Minimalism</span>
+            </div>
+            <div class="text-xs font-mono text-void-400">&copy; <span id="current-year"></span> ZERO. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            htmlElement.classList.add('dark');
+        }
+        themeToggleBtn.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+            localStorage.setItem('theme', htmlElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+    </script>
+</body>
+</html>

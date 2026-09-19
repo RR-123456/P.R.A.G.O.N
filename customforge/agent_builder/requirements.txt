@@ -1,0 +1,4 @@
+Flask>=3.0
+google-genai>=0.3.0
+send2trash>=1.8
+requests>=2.31

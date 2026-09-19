@@ -1,0 +1,16 @@
+# Install any of these if you want the matching file_processor actions to work.
+# pip install -r requirements-optional.txt   (or install individual lines as needed)
+
+Pillow              # images: describe/ocr/resize/convert/compress/info
+pdfplumber          # pdf: extract_text/summarize (falls back to PyPDF2 if absent)
+PyPDF2              # pdf: fallback text extraction
+python-docx         # docx: read/reformat
+pandas              # csv/xlsx: analyze/filter/sort/stats
+openpyxl            # xlsx read/write support for pandas
+python-pptx         # pptx: summarize/extract_text
+pyautogui           # code_helper screen_debug: takes a screenshot to analyze
+
+# Also required on PATH (not pip-installable):
+#   ffmpeg            — audio/video actions in file_processor (trim, convert, compress, transcribe, extract_frame)
+#   node / ts-node     — running .js/.ts files via code_helper's "run"/"build" actions
+#   code (VS Code CLI) — dev_agent opens finished projects in VS Code automatically; harmless if missing, it just won't open

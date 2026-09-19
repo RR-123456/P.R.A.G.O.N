@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PRAGON // C.U.S.T.O.M FORGE — style reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg-dark: #0a0b10; --bg-card: #12141c;
+    --primary: #00f2fe; --primary-rgb: 0, 242, 254;
+    --secondary: #9b51e0; --accent: #39ff14;
+    --text-main: #f1f5f9; --text-muted: #8a99ad;
+    --border: #222636; --font-sans: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background-color: var(--bg-dark); color: var(--text-main); font-family: var(--font-sans); line-height: 1.6; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+.section { padding: 8rem 0; }
+.text-gradient { background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.glow-btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #000; padding: .8rem 2rem; border-radius: 4px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: .5rem; border: none; cursor: pointer; font-family: var(--font-mono); text-transform: uppercase; font-size: .9rem; box-shadow: 0 0 20px rgba(0, 242, 254, 0.3); }
+.secondary-btn { background: transparent; color: var(--text-main); border: 1px solid var(--border); padding: .8rem 2rem; border-radius: 4px; font-weight: 600; display: inline-flex; align-items: center; gap: .5rem; cursor: pointer; font-family: var(--font-mono); text-transform: uppercase; font-size: .9rem; }
+header { position: fixed; top: 0; left: 0; width: 100%; z-index: 100; background: rgba(10, 11, 16, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+.nav-container { display: flex; justify-content: space-between; align-items: center; height: 80px; }
+.logo { font-family: var(--font-mono); font-weight: 800; font-size: 1.5rem; color: var(--text-main); display: flex; align-items: center; gap: .5rem; }
+.logo span { color: var(--primary); }
+.nav-menu { display: flex; gap: 2rem; align-items: center; list-style: none; }
+.nav-link { text-decoration: none; color: var(--text-muted); font-family: var(--font-mono); font-size: .9rem; }
+.hero { min-height: 100vh; display: flex; align-items: center; padding-top: 120px; position: relative; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; z-index: -1; background: radial-gradient(circle at 80% 20%, rgba(0, 242, 254, 0.15) 0%, transparent 50%), radial-gradient(circle at 20% 80%, rgba(155, 81, 224, 0.15) 0%, transparent 50%); }
+.hero-tagline { font-family: var(--font-mono); color: var(--primary); font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; }
+.hero-title { font-size: 4rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
+.hero-desc { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 2.5rem; max-width: 600px; }
+.feature-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 2.5rem; }
+.feature-icon { font-size: 2rem; color: var(--primary); margin-bottom: 1.5rem; }
+</style>
+</head>
+<body>
+<header><div class="container nav-container">
+  <a href="#" class="logo"><span>&lt;</span>PRAGON<span>/&gt;</span></a>
+  <ul class="nav-menu">
+    <li><a href="#hero" class="nav-link">Home</a></li>
+    <li><a href="#forge" class="nav-link">Forge</a></li>
+    <li><a href="#contact" class="nav-link">Contact</a></li>
+  </ul>
+</div></header>
+<section id="hero" class="hero">
+  <div class="hero-bg"></div>
+  <div class="container">
+    <div class="hero-tagline">C.U.S.T.O.M FORGE // ACTIVE</div>
+    <h1 class="hero-title">Forging the Next Generation of <span class="text-gradient">Digital Interfaces</span></h1>
+    <p class="hero-desc">An advanced full-stack engine designed to craft high-performance, visually stunning, and highly modular web architectures with atomic precision.</p>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+      <a href="#forge" class="glow-btn">Enter The Forge</a>
+      <a href="#contact" class="secondary-btn">Launch Terminal</a>
+    </div>
+  </div>
+</section>
+<section id="features" class="section">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;">
+      <div class="feature-card"><div class="feature-icon">⚡</div><h3>Ultra-High Performance</h3><p style="color:var(--text-muted);">Sub-millisecond load times and butter-smooth transitions.</p></div>
+      <div class="feature-card"><div class="feature-icon">⚙️</div><h3>Modular Construction</h3><p style="color:var(--text-muted);">Every component snaps together and scales effortlessly.</p></div>
+      <div class="feature-card"><div class="feature-icon">🛡️</div><h3>Production-Ready</h3><p style="color:var(--text-muted);">Rigorous test-coverage and strict compliance standards.</p></div>
+    </div>
+  </div>
+</section>
+<footer style="background:#050608;border-top:1px solid var(--border);padding:4rem 0 2rem;">
+  <div class="container" style="color:var(--text-muted);font-size:.85rem;">&copy; 2026 PRAGON. All rights reserved. Built inside C.U.S.T.O.M FORGE.</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Field Scheduler</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cyan:#00f5ff; --accent:#00d4ff; --emerald:#00e5a0; --amber:#ffc247; --danger:#ff5d5d;
+    --mono:'Share Tech Mono','JetBrains Mono','Courier New',monospace;
+    --head:'Orbitron','Arial Black',sans-serif;
+    --bg:#000; --panel:rgba(0,12,16,.55); --panel2:rgba(0,245,255,.045); --border:rgba(0,245,255,.18);
+    --text:rgba(0,245,255,.92); --muted:rgba(0,245,255,.42); --good:var(--emerald); --warn:var(--amber);
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--mono);
+    background-image:radial-gradient(ellipse at 50% -10%,rgba(0,60,70,.18) 0%,rgba(0,0,0,0) 60%);
+    position:relative;}
+  /* scanline overlay, matches PRAGON main UI */
+  body::before{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:repeating-linear-gradient(to bottom,transparent 0px,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px);
+    opacity:.5;}
+
+  header{padding:16px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;
+    justify-content:space-between;flex-wrap:wrap;gap:8px;background:rgba(0,0,0,.75);backdrop-filter:blur(16px);
+    position:sticky;top:0;z-index:10;}
+  header .htitle{display:flex;align-items:center;gap:12px;}
+  header .logo-icon{width:36px;height:36px;flex-shrink:0;border-radius:0;background:#000 center/cover no-repeat;
+    border:1px solid var(--border);}
+  header h1{font-family:var(--head);font-size:16px;margin:0;letter-spacing:3px;font-weight:900;
+    text-transform:uppercase;color:var(--cyan);text-shadow:0 0 16px rgba(0,245,255,.5);}
+  header .sub{color:var(--muted);font-size:10px;letter-spacing:1px;margin-top:3px;text-transform:uppercase;}
+  .wrap{max-width:960px;margin:0 auto;padding:22px;position:relative;z-index:2;}
+
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:4px;padding:16px;margin-bottom:16px;
+    backdrop-filter:blur(14px) saturate(160%);box-shadow:0 0 24px rgba(0,245,255,.03),inset 0 0 30px rgba(0,0,0,.35);}
+  .card h2{font-family:var(--head);font-size:11px;margin:0 0 14px;color:rgba(0,245,255,.55);
+    text-transform:uppercase;letter-spacing:2px;font-weight:700;}
+
+  .presets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+  .preset-btn{background:rgba(0,245,255,.04);border:1px solid var(--border);color:rgba(0,245,255,.7);
+    padding:7px 13px;border-radius:2px;font-size:11px;letter-spacing:.5px;cursor:pointer;font-family:var(--mono);
+    transition:all .2s;}
+  .preset-btn:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,245,255,.1);}
+
+  form{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  form .full{grid-column:1/-1;}
+  label{font-size:10px;color:var(--muted);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:1.5px;}
+  input[type=text],input[type=time],input[type=number],input[type=file],select,textarea{
+    width:100%;padding:9px 10px;background:rgba(0,245,255,.03);border:1px solid var(--border);
+    border-radius:2px;color:var(--text);font-size:13px;font-family:var(--mono);}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--cyan);
+    box-shadow:0 0 12px rgba(0,245,255,.15);}
+  textarea{resize:vertical;min-height:64px;}
+  .row{display:flex;gap:10px;align-items:end;}
+
+  button.primary{background:rgba(0,245,255,.12);color:var(--cyan);border:1px solid var(--cyan);border-radius:2px;
+    padding:10px 18px;font-weight:600;cursor:pointer;font-size:12px;font-family:var(--mono);
+    text-transform:uppercase;letter-spacing:1.5px;transition:all .25s;box-shadow:0 0 10px rgba(0,245,255,.1);}
+  button.primary:hover{background:rgba(0,245,255,.22);box-shadow:0 0 22px rgba(0,245,255,.3);}
+  button.secondary{background:transparent;color:rgba(0,245,255,.6);border:1px solid var(--border);
+    border-radius:2px;padding:10px 18px;cursor:pointer;font-size:12px;font-family:var(--mono);
+    text-transform:uppercase;letter-spacing:1.5px;transition:all .2s;}
+  button.secondary:hover{color:var(--cyan);border-color:var(--cyan);}
+
+  ul#list{list-style:none;margin:0;padding:0;}
+  ul#list li{display:flex;justify-content:space-between;align-items:center;
+    padding:12px;border:1px solid var(--border);border-radius:2px;margin-bottom:8px;background:rgba(0,245,255,.03);}
+  .r-meta{font-size:12px;color:var(--muted);margin-top:2px;}
+  .r-label{font-size:14px;font-weight:600;color:var(--text);}
+  .badge{font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px;
+    background:rgba(0,245,255,.08);color:rgba(0,245,255,.7);border:1px solid var(--border);margin-left:8px;}
+  .actions button{background:transparent;border:1px solid var(--border);color:var(--muted);
+    border-radius:2px;padding:6px 10px;cursor:pointer;margin-left:6px;font-size:11px;font-family:var(--mono);}
+  .actions button:hover{color:var(--danger);border-color:var(--danger);}
+  .empty{color:var(--muted);font-size:12px;padding:10px 2px;letter-spacing:.5px;}
+
+  #toast-layer{position:fixed;top:16px;right:16px;display:flex;flex-direction:column;gap:10px;z-index:999;}
+  .toast{background:rgba(0,5,7,.92);border:1px solid rgba(0,245,255,.35);border-radius:4px;padding:14px 16px;
+    width:320px;box-shadow:0 0 26px rgba(0,245,255,.1),0 8px 24px rgba(0,0,0,.5);backdrop-filter:blur(14px);
+    animation:slidein .2s ease-out;}
+  @keyframes slidein{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
+  .toast h3{margin:0 0 4px;font-size:13px;font-family:var(--head);letter-spacing:1px;color:var(--cyan);}
+  .toast p{margin:0 0 10px;font-size:12px;color:rgba(0,245,255,.6);}
+  .toast .trow{display:flex;gap:8px;}
+  .toast button{flex:1;border:1px solid var(--border);border-radius:2px;padding:7px;font-size:11px;cursor:pointer;
+    font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;}
+  .toast .snooze{background:transparent;color:rgba(0,245,255,.6);}
+  .toast .dismiss{background:rgba(0,229,160,.15);color:var(--emerald);border-color:var(--emerald);font-weight:600;}
+  .status{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+  .status.on{color:var(--emerald);}
+
+  /* tabs */
+  .tabs{display:flex;gap:6px;padding:0 22px;border-bottom:1px solid var(--border);max-width:960px;margin:0 auto;
+    position:relative;z-index:2;}
+  .tab-btn{background:transparent;border:none;color:var(--muted);padding:12px 14px;font-size:10px;
+    cursor:pointer;border-bottom:2px solid transparent;font-weight:700;font-family:var(--head);
+    text-transform:uppercase;letter-spacing:1.5px;transition:all .2s;}
+  .tab-btn:hover{color:rgba(0,245,255,.75);}
+  .tab-btn.active{color:var(--cyan);border-bottom-color:var(--cyan);}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  /* timer / stopwatch */
+  .clockbox{display:flex;flex-direction:column;align-items:center;gap:14px;padding:10px 0 4px;}
+  .clock-display{font-size:52px;font-weight:700;letter-spacing:2px;font-variant-numeric:tabular-nums;
+    color:var(--cyan);text-shadow:0 0 20px rgba(0,245,255,.4);font-family:var(--mono);}
+  .clock-controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media (max-width:720px){ .two-col{grid-template-columns:1fr;} }
+  .laps{margin-top:10px;max-height:160px;overflow-y:auto;font-size:12px;}
+  .laps div{display:flex;justify-content:space-between;padding:6px 8px;border-bottom:1px solid var(--border);color:var(--muted);}
+
+  /* tool library */
+  .tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
+  .tool-card{background:rgba(0,245,255,.03);border:1px solid var(--border);border-radius:4px;overflow:hidden;
+    cursor:pointer;transition:box-shadow .25s,border-color .25s;}
+  .tool-card:hover{border-color:rgba(0,245,255,.4);box-shadow:0 0 18px rgba(0,245,255,.08);}
+  .tool-card img.thumb{width:100%;height:130px;object-fit:cover;display:block;background:#000;}
+  .tool-card .noimg{width:100%;height:130px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;background:#000;text-transform:uppercase;letter-spacing:1px;}
+  .tool-card .tbody{padding:10px;}
+  .tool-card h3{font-size:13px;margin:0 0 4px;color:var(--text);font-weight:600;}
+  .tool-card p{margin:0;font-size:11px;color:var(--muted);
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+
+  .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px;}
+  .modal{background:rgba(0,6,8,.95);border:1px solid rgba(0,245,255,.3);border-radius:6px;max-width:640px;width:100%;
+    max-height:88vh;overflow-y:auto;padding:20px;box-shadow:0 0 40px rgba(0,245,255,.12);backdrop-filter:blur(16px);}
+  .modal h2{margin-top:0;font-family:var(--head);letter-spacing:1.5px;color:var(--cyan);font-size:15px;text-transform:uppercase;}
+  .modal img.full{width:100%;max-height:280px;object-fit:contain;background:#000;border-radius:4px;margin-bottom:12px;border:1px solid var(--border);}
+  .modal .section{margin-bottom:14px;}
+  .modal .section h4{margin:0 0 4px;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;}
+  .modal .section p{margin:0;font-size:13px;white-space:pre-wrap;color:rgba(0,245,255,.85);}
+  .modal .close-x{float:right;background:transparent;border:none;color:var(--muted);font-size:18px;cursor:pointer;}
+  .modal .close-x:hover{color:var(--cyan);}
+  .doc-link{display:inline-block;margin-top:4px;background:rgba(0,245,255,.05);border:1px solid var(--border);
+    color:var(--cyan);padding:7px 12px;border-radius:2px;font-size:12px;text-decoration:none;letter-spacing:.5px;}
+  .doc-link:hover{border-color:var(--cyan);background:rgba(0,245,255,.12);}
+  .verify-box{margin-top:14px;padding:12px;border:1px dashed var(--border);border-radius:4px;}
+  .verify-note{font-size:11px;color:var(--emerald);margin-top:8px;letter-spacing:.5px;}
+  .hint{font-size:10px;color:var(--muted);margin-top:6px;letter-spacing:.3px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="htitle">
+    <div class="logo-icon" style="background-image:url('../assets/pragon_icon_64.png')"></div>
+    <div>
+      <h1>Field Scheduler</h1>
+      <div class="sub">PRAGON module — independent of the main assistant's reminders</div>
+    </div>
+  </div>
+  <div id="permStatus" class="status">Notifications: checking…</div>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="reminders">Reminders</button>
+  <button class="tab-btn" data-tab="timer">Timer / Stopwatch</button>
+  <button class="tab-btn" data-tab="tools">Tool Library</button>
+</div>
+
+<div class="wrap">
+
+  <!-- ============ TAB: REMINDERS ============ -->
+  <div class="tab-panel active" id="tab-reminders">
+
+    <div class="card">
+      <h2>Quick add — common field reminders</h2>
+      <div class="presets" id="presets"></div>
+
+      <form id="form">
+        <div>
+          <label>Label</label>
+          <input type="text" id="f-label" placeholder="e.g. Put on gloves" required>
+        </div>
+        <div>
+          <label>Type</label>
+          <select id="f-type">
+            <option value="daily">Daily at a time</option>
+            <option value="interval">Repeat every N minutes</option>
+            <option value="once">One-time (today, at a time)</option>
+          </select>
+        </div>
+        <div id="f-time-wrap">
+          <label>Time</label>
+          <input type="time" id="f-time">
+        </div>
+        <div id="f-interval-wrap" style="display:none">
+          <label>Interval (minutes)</label>
+          <input type="number" id="f-interval" min="1" value="45">
+        </div>
+        <div class="full">
+          <label>Message (what to say when it pings)</label>
+          <input type="text" id="f-message" placeholder="e.g. Put on your gloves before continuing">
+        </div>
+        <div class="full row">
+          <button type="submit" class="primary">Add reminder</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Active reminders</h2>
+      <ul id="list"></ul>
+      <div id="emptyMsg" class="empty">No reminders yet — add one above, or use a quick preset.</div>
+    </div>
+
+  </div>
+
+  <!-- ============ TAB: TIMER / STOPWATCH ============ -->
+  <div class="tab-panel" id="tab-timer">
+    <div class="two-col">
+
+      <div class="card">
+        <h2>Countdown timer</h2>
+        <div class="clockbox">
+          <div class="clock-display" id="timerDisplay">00:00</div>
+          <div class="row" style="gap:8px">
+            <div><label>Min</label><input type="number" id="timerMin" min="0" value="5" style="width:80px"></div>
+            <div><label>Sec</label><input type="number" id="timerSec" min="0" max="59" value="0" style="width:80px"></div>
+          </div>
+          <div class="clock-controls">
+            <button class="primary" id="timerStart">Start</button>
+            <button class="secondary" id="timerPause">Pause</button>
+            <button class="secondary" id="timerReset">Reset</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Stopwatch</h2>
+        <div class="clockbox">
+          <div class="clock-display" id="swDisplay">00:00.0</div>
+          <div class="clock-controls">
+            <button class="primary" id="swStart">Start</button>
+            <button class="secondary" id="swLap">Lap</button>
+            <button class="secondary" id="swReset">Reset</button>
+          </div>
+          <div class="laps" id="swLaps"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============ TAB: TOOL LIBRARY ============ -->
+  <div class="tab-panel" id="tab-tools">
+
+    <div class="card">
+      <h2>Add / update a tool or part</h2>
+      <form id="toolForm">
+        <input type="hidden" id="t-id">
+        <div class="full">
+          <label>Name</label>
+          <input type="text" id="t-name" placeholder="e.g. Torque wrench, 10mm bearing" required>
+        </div>
+        <div>
+          <label>Reference photo</label>
+          <input type="file" id="t-photo" accept="image/*">
+        </div>
+        <div>
+          <label>Manual / spec sheet (PDF or DOC)</label>
+          <input type="file" id="t-doc" accept="application/pdf,.doc,.docx">
+        </div>
+        <div class="full">
+          <label>Description (what it is / identifying details)</label>
+          <textarea id="t-desc" placeholder="e.g. 3/8-inch drive, torque range 10-80 Nm, part no. TW-3810"></textarea>
+        </div>
+        <div class="full">
+          <label>How to use it</label>
+          <textarea id="t-use"></textarea>
+        </div>
+        <div class="full">
+          <label>How to assemble it</label>
+          <textarea id="t-assemble"></textarea>
+        </div>
+        <div class="full row">
+          <button type="submit" class="primary" id="toolSaveBtn">Save tool</button>
+          <button type="button" class="secondary" id="toolCancelEdit" style="display:none">Cancel edit</button>
+        </div>
+        <div class="full hint">Photos and documents are stored inside this page's local storage only — nothing is uploaded anywhere. Large files may be rejected if storage space runs out; keep photos reasonably sized.</div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Tool library — click a tool to verify / view details</h2>
+      <div class="tool-grid" id="toolGrid"></div>
+      <div id="toolEmptyMsg" class="empty">No tools added yet.</div>
+    </div>
+
+  </div>
+
+</div>
+
+<div id="toast-layer"></div>
+<div id="modalLayer"></div>
+
+<script>
+/* ============================================================
+   FIELD SCHEDULER — fully self-contained, independent module.
+   Not wired into PRAGON's existing reminder.py in any way.
+   Persists to localStorage in THIS page only.
+   ============================================================ */
+
+/* ---------- tabs ---------- */
+document.querySelectorAll(".tab-btn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".tab-panel").forEach(p=>p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("tab-"+btn.dataset.tab).classList.add("active");
+  });
+});
+
+/* ============================================================
+   REMINDERS (unchanged behaviour from the original module)
+   ============================================================ */
+const STORAGE_KEY = "field_scheduler_reminders_v1";
+
+const PRESETS = [
+  { label: "Tea time", type: "daily", time: "16:00",
+    message: "Tea time — take a short break." },
+  { label: "Put on PPE / gloves", type: "daily", time: "08:00",
+    message: "Suggested: put on your gloves and required PPE before starting work." },
+  { label: "Neck & shoulder stretch", type: "interval", interval: 45,
+    message: "Stretch break — roll your neck and shoulders for a minute to avoid cramping." },
+  { label: "Tablet / medicine time", type: "daily", time: "13:00",
+    message: "Reminder: take your scheduled tablet." },
+  { label: "Shift ending", type: "daily", time: "17:30",
+    message: "Shift is ending soon — start wrapping up your current task." },
+  { label: "Return tools to holder", type: "daily", time: "17:45",
+    message: "Return all tools to the tool holder before you leave." },
+];
+
+let reminders = load(STORAGE_KEY, []);
+
+function load(key, fallback){
+  try { return JSON.parse(localStorage.getItem(key)) ?? fallback; }
+  catch(e){ return fallback; }
+}
+function saveKey(key, value){
+  try { localStorage.setItem(key, JSON.stringify(value)); return true; }
+  catch(e){ alert("Could not save — local storage may be full."); return false; }
+}
+function save(){ saveKey(STORAGE_KEY, reminders); }
+
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function todayStr(){ return new Date().toISOString().slice(0,10); }
+
+function renderPresets(){
+  const box = document.getElementById("presets");
+  box.innerHTML = "";
+  PRESETS.forEach(p=>{
+    const b = document.createElement("button");
+    b.className = "preset-btn";
+    b.type = "button";
+    b.textContent = p.label;
+    b.onclick = ()=> addReminder({ ...p });
+    box.appendChild(b);
+  });
+}
+
+function addReminder(r){
+  const rem = {
+    id: uid(),
+    label: r.label,
+    type: r.type,
+    time: r.time || null,
+    interval: r.interval || null,
+    message: r.message || r.label,
+    createdAt: Date.now(),
+    lastFiredAt: 0,
+    lastFiredDate: null,
+    fired: false
+  };
+  reminders.push(rem);
+  save();
+  renderList();
+}
+
+function removeReminder(id){
+  reminders = reminders.filter(r=>r.id!==id);
+  save();
+  renderList();
+}
+
+function renderList(){
+  const ul = document.getElementById("list");
+  const empty = document.getElementById("emptyMsg");
+  ul.innerHTML = "";
+  if(reminders.length===0){ empty.style.display="block"; return; }
+  empty.style.display="none";
+
+  reminders.forEach(r=>{
+    const li = document.createElement("li");
+    let meta = "";
+    if(r.type==="daily") meta = `Daily at ${r.time}`;
+    else if(r.type==="interval") meta = `Every ${r.interval} min`;
+    else meta = `Once at ${r.time} today`;
+
+    li.innerHTML = `
+      <div>
+        <div class="r-label">${escapeHtml(r.label)} <span class="badge">${r.type}</span></div>
+        <div class="r-meta">${meta} — "${escapeHtml(r.message)}"</div>
+      </div>
+      <div class="actions"><button data-id="${r.id}">Remove</button></div>
+    `;
+    li.querySelector("button").onclick = ()=> removeReminder(r.id);
+    ul.appendChild(li);
+  });
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, m => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[m]));
+}
+
+const typeSel = document.getElementById("f-type");
+typeSel.addEventListener("change", ()=>{
+  document.getElementById("f-time-wrap").style.display = typeSel.value==="interval" ? "none":"block";
+  document.getElementById("f-interval-wrap").style.display = typeSel.value==="interval" ? "block":"none";
+});
+
+document.getElementById("form").addEventListener("submit", e=>{
+  e.preventDefault();
+  const label = document.getElementById("f-label").value.trim();
+  const type = typeSel.value;
+  const time = document.getElementById("f-time").value;
+  const interval = parseInt(document.getElementById("f-interval").value, 10);
+  const message = document.getElementById("f-message").value.trim() || label;
+  if(!label) return;
+  if((type==="daily"||type==="once") && !time){ alert("Pick a time."); return; }
+  if(type==="interval" && (!interval || interval<1)){ alert("Enter a valid interval."); return; }
+  addReminder({ label, type, time, interval, message });
+  e.target.reset();
+  typeSel.dispatchEvent(new Event("change"));
+});
+
+function requestNotifyPermission(){
+  const el = document.getElementById("permStatus");
+  if(!("Notification" in window)){ el.textContent="Notifications: unsupported (on-screen alerts still work)"; return; }
+  if(Notification.permission === "granted"){ el.textContent="Notifications: on"; el.classList.add("on"); return; }
+  if(Notification.permission !== "denied"){
+    Notification.requestPermission().then(p=>{
+      el.textContent = p==="granted" ? "Notifications: on" : "Notifications: blocked (on-screen alerts still work)";
+      if(p==="granted") el.classList.add("on");
+    });
+  } else {
+    el.textContent = "Notifications: blocked (on-screen alerts still work)";
+  }
+}
+
+function beep(freq=880, dur=0.5){
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime+0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+dur);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(); osc.stop(ctx.currentTime+dur);
+  }catch(e){}
+}
+
+function fire(rem){
+  beep();
+  if("Notification" in window && Notification.permission==="granted"){
+    try { new Notification("Field Scheduler — " + rem.label, { body: rem.message }); } catch(e){}
+  }
+  showToast(rem.label, rem.message);
+}
+
+function showToast(title, message){
+  const layer = document.getElementById("toast-layer");
+  const t = document.createElement("div");
+  t.className = "toast";
+  t.innerHTML = `
+    <h3>⏰ ${escapeHtml(title)}</h3>
+    <p>${escapeHtml(message)}</p>
+    <div class="trow">
+      <button class="snooze">Snooze 5 min</button>
+      <button class="dismiss">Dismiss</button>
+    </div>
+  `;
+  layer.appendChild(t);
+  t.querySelector(".dismiss").onclick = ()=> t.remove();
+  t.querySelector(".snooze").onclick = ()=>{
+    t.remove();
+    setTimeout(()=> showToast(title, message), 5*60*1000);
+  };
+  setTimeout(()=>{ if(t.parentNode) t.remove(); }, 30000);
+}
+
+function tick(){
+  const now = new Date();
+  const hhmm = now.toTimeString().slice(0,5);
+  const nowMs = now.getTime();
+  let changed = false;
+
+  reminders.forEach(r=>{
+    if(r.type==="daily"){
+      if(r.time===hhmm && r.lastFiredDate!==todayStr()){
+        fire(r); r.lastFiredDate = todayStr(); r.lastFiredAt = nowMs; changed = true;
+      }
+    } else if(r.type==="interval"){
+      const base = r.lastFiredAt || r.createdAt;
+      if(nowMs - base >= r.interval*60*1000){
+        fire(r); r.lastFiredAt = nowMs; changed = true;
+      }
+    } else if(r.type==="once"){
+      if(!r.fired && r.time===hhmm){
+        fire(r); r.fired = true; changed = true;
+      }
+    }
+  });
+
+  if(changed) save();
+}
+
+renderPresets();
+renderList();
+requestNotifyPermission();
+setInterval(tick, 15000);
+
+
+/* ============================================================
+   TIMER (countdown)
+   ============================================================ */
+let timerRemaining = 0;   // seconds
+let timerHandle = null;
+let timerRunning = false;
+
+function fmtHMS(totalSec){
+  const m = Math.floor(totalSec/60).toString().padStart(2,"0");
+  const s = Math.floor(totalSec%60).toString().padStart(2,"0");
+  return `${m}:${s}`;
+}
+function renderTimer(){ document.getElementById("timerDisplay").textContent = fmtHMS(timerRemaining); }
+
+document.getElementById("timerStart").addEventListener("click", ()=>{
+  if(timerRunning) return;
+  if(timerRemaining<=0){
+    const min = parseInt(document.getElementById("timerMin").value,10) || 0;
+    const sec = parseInt(document.getElementById("timerSec").value,10) || 0;
+    timerRemaining = min*60+sec;
+    if(timerRemaining<=0) return;
+  }
+  renderTimer();
+  timerRunning = true;
+  timerHandle = setInterval(()=>{
+    timerRemaining -= 1;
+    if(timerRemaining<=0){
+      timerRemaining = 0;
+      renderTimer();
+      clearInterval(timerHandle);
+      timerRunning = false;
+      beep(660, 0.8);
+      if("Notification" in window && Notification.permission==="granted"){
+        try{ new Notification("Field Scheduler — Timer", {body:"Countdown finished."}); }catch(e){}
+      }
+      showToast("Timer finished", "Countdown reached zero.");
+      return;
+    }
+    renderTimer();
+  }, 1000);
+});
+document.getElementById("timerPause").addEventListener("click", ()=>{
+  clearInterval(timerHandle); timerRunning=false;
+});
+document.getElementById("timerReset").addEventListener("click", ()=>{
+  clearInterval(timerHandle); timerRunning=false; timerRemaining=0; renderTimer();
+});
+renderTimer();
+
+/* ============================================================
+   STOPWATCH
+   ============================================================ */
+let swStartTs = 0, swElapsed = 0, swHandle = null, swRunning = false, swLapCount = 0;
+
+function fmtStopwatch(ms){
+  const totalTenths = Math.floor(ms/100);
+  const m = Math.floor(totalTenths/600).toString().padStart(2,"0");
+  const s = Math.floor((totalTenths/10)%60).toString().padStart(2,"0");
+  const t = (totalTenths%10).toString();
+  return `${m}:${s}.${t}`;
+}
+function renderSW(){ document.getElementById("swDisplay").textContent = fmtStopwatch(swElapsed); }
+
+document.getElementById("swStart").addEventListener("click", (e)=>{
+  if(!swRunning){
+    swRunning = true;
+    swStartTs = Date.now() - swElapsed;
+    swHandle = setInterval(()=>{ swElapsed = Date.now()-swStartTs; renderSW(); }, 100);
+    e.target.textContent = "Stop";
+  } else {
+    swRunning = false;
+    clearInterval(swHandle);
+    e.target.textContent = "Start";
+  }
+});
+document.getElementById("swLap").addEventListener("click", ()=>{
+  if(!swRunning) return;
+  swLapCount += 1;
+  const div = document.createElement("div");
+  div.innerHTML = `<span>Lap ${swLapCount}</span><span>${fmtStopwatch(swElapsed)}</span>`;
+  document.getElementById("swLaps").prepend(div);
+});
+document.getElementById("swReset").addEventListener("click", ()=>{
+  swRunning=false; clearInterval(swHandle); swElapsed=0; swLapCount=0;
+  renderSW();
+  document.getElementById("swLaps").innerHTML="";
+  document.getElementById("swStart").textContent="Start";
+});
+renderSW();
+
+
+/* ============================================================
+   TOOL LIBRARY — photo + description + how-to-use + how-to-assemble
+   + PDF/DOC manual. Add / edit / delete. Stored locally per-browser.
+   ============================================================ */
+const TOOLS_KEY = "field_scheduler_tools_v1";
+let tools = load(TOOLS_KEY, []);
+let editingId = null;
+
+function saveTools(){ return saveKey(TOOLS_KEY, tools); }
+
+function fileToDataUrl(file){
+  return new Promise((resolve, reject)=>{
+    if(!file){ resolve(null); return; }
+    const reader = new FileReader();
+    reader.onload = ()=> resolve({ name: file.name, type: file.type, dataUrl: reader.result });
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderToolGrid(){
+  const grid = document.getElementById("toolGrid");
+  const empty = document.getElementById("toolEmptyMsg");
+  grid.innerHTML = "";
+  if(tools.length===0){ empty.style.display="block"; return; }
+  empty.style.display="none";
+
+  tools.forEach(t=>{
+    const card = document.createElement("div");
+    card.className = "tool-card";
+    card.innerHTML = `
+      ${t.photo ? `<img class="thumb" src="${t.photo.dataUrl}" alt="${escapeHtml(t.name)}">`
+                 : `<div class="noimg">No photo</div>`}
+      <div class="tbody">
+        <h3>${escapeHtml(t.name)}</h3>
+        <p>${escapeHtml(t.description || "No description yet.")}</p>
+      </div>
+    `;
+    card.addEventListener("click", ()=> openToolModal(t.id));
+    grid.appendChild(card);
+  });
+}
+
+document.getElementById("toolForm").addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  const name = document.getElementById("t-name").value.trim();
+  if(!name) return;
+
+  const photoFile = document.getElementById("t-photo").files[0];
+  const docFile = document.getElementById("t-doc").files[0];
+
+  let photo = null, doc = null;
+  try{
+    if(photoFile) photo = await fileToDataUrl(photoFile);
+    if(docFile) doc = await fileToDataUrl(docFile);
+  }catch(err){
+    alert("Could not read the selected file(s).");
+    return;
+  }
+
+  const desc = document.getElementById("t-desc").value.trim();
+  const use = document.getElementById("t-use").value.trim();
+  const assemble = document.getElementById("t-assemble").value.trim();
+
+  if(editingId){
+    const t = tools.find(x=>x.id===editingId);
+    if(t){
+      t.name = name;
+      t.description = desc;
+      t.howToUse = use;
+      t.howToAssemble = assemble;
+      if(photo) t.photo = photo;
+      if(doc) t.doc = doc;
+    }
+  } else {
+    tools.push({
+      id: uid(), name, description: desc, howToUse: use, howToAssemble: assemble,
+      photo: photo, doc: doc, verifiedAt: null
+    });
+  }
+
+  if(saveTools()){
+    resetToolForm();
+    renderToolGrid();
+  }
+});
+
+function resetToolForm(){
+  editingId = null;
+  document.getElementById("toolForm").reset();
+  document.getElementById("t-id").value = "";
+  document.getElementById("toolSaveBtn").textContent = "Save tool";
+  document.getElementById("toolCancelEdit").style.display = "none";
+}
+document.getElementById("toolCancelEdit").addEventListener("click", resetToolForm);
+
+function openToolModal(id){
+  const t = tools.find(x=>x.id===id);
+  if(!t) return;
+  const layer = document.getElementById("modalLayer");
+
+  const docLink = t.doc
+    ? `<a class="doc-link" href="${t.doc.dataUrl}" download="${escapeHtml(t.doc.name)}" target="_blank" rel="noopener">📄 Open manual — ${escapeHtml(t.doc.name)}</a>`
+    : `<span class="hint">No manual/document attached.</span>`;
+
+  layer.innerHTML = `
+    <div class="modal-backdrop" id="modalBackdrop">
+      <div class="modal">
+        <button class="close-x" id="modalClose">✕</button>
+        <h2>${escapeHtml(t.name)}</h2>
+        ${t.photo ? `<img class="full" src="${t.photo.dataUrl}" alt="${escapeHtml(t.name)}">` : ""}
+
+        <div class="section">
+          <h4>Description</h4>
+          <p>${escapeHtml(t.description || "—")}</p>
+        </div>
+        <div class="section">
+          <h4>How to use it</h4>
+          <p>${escapeHtml(t.howToUse || "—")}</p>
+        </div>
+        <div class="section">
+          <h4>How to assemble it</h4>
+          <p>${escapeHtml(t.howToAssemble || "—")}</p>
+        </div>
+        <div class="section">
+          <h4>Manual / spec sheet</h4>
+          ${docLink}
+        </div>
+
+        <div class="verify-box">
+          <strong>Verify match</strong>
+          <p class="hint" style="margin:4px 0 0">Compare the physical tool/part in front of you against the reference photo and description above.</p>
+          <div class="row" style="margin-top:10px">
+            <button class="primary" id="verifyBtn">✓ Confirm it matches</button>
+            <button class="secondary" id="editBtn">Edit entry</button>
+            <button class="secondary" id="deleteBtn" style="border-color:var(--danger);color:var(--danger)">Delete</button>
+          </div>
+          ${t.verifiedAt ? `<div class="verify-note">Last confirmed match: ${new Date(t.verifiedAt).toLocaleString()}</div>` : ""}
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("modalClose").onclick = closeModal;
+  document.getElementById("modalBackdrop").addEventListener("click", (e)=>{
+    if(e.target.id==="modalBackdrop") closeModal();
+  });
+  document.getElementById("verifyBtn").onclick = ()=>{
+    t.verifiedAt = Date.now();
+    saveTools();
+    openToolModal(id); // re-render with updated confirmation note
+  };
+  document.getElementById("editBtn").onclick = ()=>{
+    editingId = t.id;
+    document.getElementById("t-id").value = t.id;
+    document.getElementById("t-name").value = t.name;
+    document.getElementById("t-desc").value = t.description || "";
+    document.getElementById("t-use").value = t.howToUse || "";
+    document.getElementById("t-assemble").value = t.howToAssemble || "";
+    document.getElementById("toolSaveBtn").textContent = "Update tool";
+    document.getElementById("toolCancelEdit").style.display = "inline-block";
+    closeModal();
+    document.querySelector('.tab-btn[data-tab="tools"]').click();
+    const formEl = document.getElementById("toolForm");
+    if (formEl.scrollIntoView) formEl.scrollIntoView({behavior:"smooth"});
+  };
+  document.getElementById("deleteBtn").onclick = ()=>{
+    if(!confirm(`Delete "${t.name}"? This cannot be undone.`)) return;
+    tools = tools.filter(x=>x.id!==t.id);
+    saveTools();
+    closeModal();
+    renderToolGrid();
+  };
+}
+function closeModal(){ document.getElementById("modalLayer").innerHTML = ""; }
+
+renderToolGrid();
+
+</script>
+</body>
+</html>

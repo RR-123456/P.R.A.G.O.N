@@ -1,0 +1,51 @@
+[
+  {
+    "id": "zero-minimalism",
+    "name": "ZERO — Absolute Minimalism",
+    "tagline": "Brutalist, monochrome, huge type, one cyan glow accent",
+    "filename": "zero-minimalism.html",
+    "builtin": true
+  },
+  {
+    "id": "maths-explorer",
+    "name": "Maths Explorer",
+    "tagline": "Clean corporate/edu, cyan-to-indigo gradient hero, card grids",
+    "filename": "maths-explorer.html",
+    "builtin": true
+  },
+  {
+    "id": "infinity-workspace",
+    "name": "Infinity Workspace",
+    "tagline": "Dark SaaS, cyan/purple glow, rounded cards, gradient headline",
+    "filename": "infinity-workspace.html",
+    "builtin": true
+  },
+  {
+    "id": "pragon-cyber-forge",
+    "name": "Pragon Cyber Forge",
+    "tagline": "Dark terminal-inspired, cyan/purple gradient text, mono accents",
+    "filename": "pragon-cyber-forge.html",
+    "builtin": true
+  },
+  {
+    "id": "pragon-master-forge",
+    "name": "Pragon Master Forge",
+    "tagline": "Cyberpunk, Orbitron display font, glowing grid background",
+    "filename": "pragon-master-forge.html",
+    "builtin": true
+  },
+  {
+    "id": "pragon-dragon-meow",
+    "name": "Pragon Dragon Mode",
+    "tagline": "Dark red-accent theme with a swappable cyan alt palette",
+    "filename": "pragon-dragon-meow.html",
+    "builtin": true
+  },
+  {
+    "id": "logesh-portfolio",
+    "name": "Logesh Portfolio",
+    "tagline": "Indigo accent, light/dark toggle, developer portfolio feel",
+    "filename": "logesh-portfolio.html",
+    "builtin": true
+  }
+]

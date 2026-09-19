@@ -1,0 +1,59 @@
+sounddevice
+websockets
+google-genai
+google-generativeai
+pillow
+requests
+beautifulsoup4
+ddgs
+playwright
+pyautogui
+pynput
+pyperclip
+pygetwindow
+opencv-python
+numpy
+mss
+psutil
+send2trash
+youtube-transcript-api
+python-pptx
+fastapi
+uvicorn[standard]
+cryptography
+python-multipart
+PyJWT
+comtypes; sys_platform == "win32"
+pycaw; sys_platform == "win32"
+win10toast; sys_platform == "win32"
+pywinauto; sys_platform == "win32"
+pywin32; sys_platform == "win32"
+wmi; sys_platform == "win32"
+qrcode[pil]
+
+# Optional - smart home plugins (Tuya / Smart Life)
+tinytuya
+
+# Optional - agentic/utils integration (graceful fallback if missing)
+langdetect
+sentence-transformers
+chromadb
+google-api-python-client
+google-auth-oauthlib
+
+# Optional - Library RAG file extraction (graceful fallback if missing)
+pypdf
+python-docx
+openpyxl
+pytesseract
+
+# Optional - local wake word ("Hey Jarvis")
+# Deliberately NOT installed by default -- it's opt-in. Enable it (and download
+# the small model) with one click from the topbar WAKE WORD button, or install
+# it yourself with:  pip install openwakeword
+
+# LiveKit and Moss Integration
+livekit
+livekit-agents
+livekit-plugins-google
+livekit-plugins-silero

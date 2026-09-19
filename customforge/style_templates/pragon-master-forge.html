@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<title>PRAGON | Master Frontend Forge — style reference</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Orbitron:wght@400;600;800;900&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = { theme: { extend: { fontFamily: { sans: ['Space Grotesk', 'sans-serif'], display: ['Orbitron', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] }, colors: { cyber: { bg: '#06060a', panel: 'rgba(12, 12, 20, 0.8)', accent: '#00f2fe' } } } } }
+</script>
+<style>
+body { background-color: #06060a; color: #e2e8f0; }
+.glow-text { text-shadow: 0 0 10px rgba(0,242,254,0.4), 0 0 20px rgba(0,242,254,0.4); }
+.grid-bg { background-size: 40px 40px; background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px); }
+@keyframes pulse-slow { 0%,100% { transform: scale(1); opacity: .8; } 50% { transform: scale(1.05); opacity: 1; } }
+.animate-pulse-slow { animation: pulse-slow 4s ease-in-out infinite; }
+</style>
+</head>
+<body class="font-sans selection:bg-cyan-500 selection:text-black">
+<div class="grid-bg min-h-screen flex flex-col">
+<header class="sticky top-0 z-50 backdrop-blur-md bg-cyber-bg/80 border-b border-white/10">
+  <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-3">
+      <div class="w-10 h-10 flex items-center justify-center border border-cyber-accent/30 rounded-lg bg-black">
+        <span class="font-display font-black text-xl text-white">P</span>
+      </div>
+      <div>
+        <span class="font-display font-bold tracking-wider text-lg block text-white">PRAGON</span>
+        <span class="text-[9px] font-mono tracking-widest text-cyber-accent/80 block uppercase">C.U.S.T.O.M Forge</span>
+      </div>
+    </a>
+    <nav class="hidden md:flex items-center gap-8">
+      <a href="#core" class="text-sm font-medium text-slate-400 hover:text-white transition-colors">The Core</a>
+      <a href="#capabilities" class="text-sm font-medium text-slate-400 hover:text-white transition-colors">Capabilities</a>
+    </nav>
+    <a href="#core" class="px-5 py-2.5 rounded-lg border border-cyber-accent/50 bg-cyber-accent/10 text-xs font-display font-bold tracking-wider text-white">IGNITE FORGE ⚡</a>
+  </div>
+</header>
+
+<section id="core" class="relative min-h-[80vh] flex items-center justify-center px-6 py-12 overflow-hidden">
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyber-accent/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="max-w-4xl mx-auto text-center relative z-10 space-y-8">
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-cyber-accent/30 bg-cyber-accent/5 text-xs font-mono text-cyber-accent tracking-wider uppercase">
+      <span class="w-2 h-2 rounded-full bg-cyber-accent animate-ping"></span>
+      SYSTEM ACTIVE // AGENT PRAGON
+    </div>
+    <h1 class="font-display font-black text-4xl md:text-6xl lg:text-7xl tracking-tight leading-none text-white">
+      WEAPONIZING <br>
+      <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyber-accent via-white to-cyber-accent">CODE</span>. FORGING INTERFACES.
+    </h1>
+    <p class="text-slate-400 text-base md:text-lg max-w-xl mx-auto leading-relaxed font-light">
+      An expert full-stack frontend engineer inside the C.U.S.T.O.M FORGE builder, synthesizing raw ideas into high-performance, breathtaking digital experiences.
+    </p>
+    <div class="flex flex-wrap items-center justify-center gap-4 pt-4">
+      <a href="#capabilities" class="px-8 py-4 bg-cyber-accent text-black font-display font-bold text-sm tracking-wider rounded-lg shadow-[0_0_20px_rgba(0,242,254,0.4)]">ENTER THE CHAMBER</a>
+    </div>
+  </div>
+</section>
+
+<section id="capabilities" class="py-24 px-6 border-t border-white/5 bg-black/40">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+      <h2 class="font-display font-black text-3xl md:text-5xl tracking-tight text-white">THE FORGE <span class="text-cyber-accent">CAPABILITIES</span></h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="group relative bg-cyber-panel border border-white/5 hover:border-cyber-accent/50 rounded-xl p-8 transition-all duration-300">
+        <div class="w-12 h-12 bg-cyber-accent/10 rounded-lg flex items-center justify-center mb-6 border border-cyber-accent/20 text-cyber-accent">⚡</div>
+        <h3 class="font-display font-bold text-xl text-white mb-3">Sub-Atomic CSS</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">Ultra-lightweight, highly structured utility architectures.</p>
+      </div>
+      <div class="group relative bg-cyber-panel border border-white/5 hover:border-cyber-accent/50 rounded-xl p-8 transition-all duration-300">
+        <div class="w-12 h-12 bg-cyber-accent/10 rounded-lg flex items-center justify-center mb-6 border border-cyber-accent/20 text-cyber-accent">⚙️</div>
+        <h3 class="font-display font-bold text-xl text-white mb-3">Quantum Reactivity</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">State management so responsive it anticipates interactions.</p>
+      </div>
+      <div class="group relative bg-cyber-panel border border-white/5 hover:border-cyber-accent/50 rounded-xl p-8 transition-all duration-300">
+        <div class="w-12 h-12 bg-cyber-accent/10 rounded-lg flex items-center justify-center mb-6 border border-cyber-accent/20 text-cyber-accent">🧩</div>
+        <h3 class="font-display font-bold text-xl text-white mb-3">Modular Synthesis</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">Component-driven architectures built to scale.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="mt-auto border-t border-white/10 bg-black/80 py-12 px-6">
+  <div class="max-w-7xl mx-auto text-xs font-mono text-slate-500 text-center">&copy; 2026 PRAGON. ENGINEERED UNDER SYSTEM RESTRICTIONS.</div>
+</footer>
+</div>
+</body>
+</html>

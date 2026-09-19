@@ -1,0 +1,108 @@
+{
+  "identity": {
+    "name": {
+      "value": "Pragath",
+      "updated": "2026-07-02"
+    },
+    "nickname": {
+      "value": "RR",
+      "updated": "2026-07-14"
+    },
+    "city": {
+      "value": "Chennai",
+      "updated": "2026-06-28"
+    },
+    "language": {
+      "value": "Tamil",
+      "updated": "2026-09-15"
+    },
+    "pragon_definition": {
+      "value": "Polymathic Responsive Autonomous Generative Optimal Neural System",
+      "updated": "2026-07-19"
+    },
+    "origin_name": {
+      "value": "Origin",
+      "updated": "2026-07-28"
+    },
+    "job": {
+      "value": "Machine Learning Engineer",
+      "updated": "2026-07-29"
+    }
+  },
+  "preferences": {
+    "language": {
+      "value": "Tamil",
+      "updated": "2026-06-24"
+    }
+  },
+  "projects": {
+    "patent_plan": {
+      "value": "User plans to publish and get a patent for their design, considering developing a basic model for a broader patent.",
+      "updated": "2026-06-24"
+    },
+    "origin_project_name": {
+      "value": "Origin website for Pragan",
+      "updated": "2026-07-28"
+    },
+    "ai_development_interest": {
+      "value": "Developing AI models",
+      "updated": "2026-07-29"
+    }
+  },
+  "relationships": {
+    "person_boomer": {
+      "value": "called Boomer",
+      "updated": "2026-06-27"
+    }
+  },
+  "wishes": {
+    "marriage_plan": {
+      "value": "Getting married",
+      "updated": "2026-06-29"
+    },
+    "purchase_intent": {
+      "value": "Buy 5 sovereigns of gold jewelry",
+      "updated": "2026-07-14"
+    },
+    "save_money_plan": {
+      "value": "save money",
+      "updated": "2026-07-24"
+    }
+  },
+  "notes": {
+    "whatsapp_call_status": {
+      "value": "Successfully initiated WhatsApp call to Boomer after troubleshooting.",
+      "updated": "2026-06-27"
+    },
+    "age_42_calculation": {
+      "value": "Calculated age as 42 (15+27) connecting to Leo",
+      "updated": "2026-06-29"
+    },
+    "additional_targets_count": {
+      "value": "130",
+      "updated": "2026-07-01"
+    },
+    "role": {
+      "value": "boss",
+      "updated": "2026-07-04"
+    },
+    "risk_taking_context": {
+      "value": "User mentioned taking a bit more risk recently",
+      "updated": "2026-07-14"
+    },
+    "relationship_conflict": {
+      "value": "User is in conflict, possibly with partner or friend, vehemently denying something and bringing up past events and investigations with friends. Seems very agitated.",
+      "updated": "2026-08-01"
+    },
+    "most_lived_place": {
+      "value": "Kayalayam (Kayal Ayam - Kayal means fish, Ayam means will do)",
+      "updated": "2026-08-17"
+    }
+  },
+  "relationships, notes": {
+    "partner_relationship": {
+      "value": "sister",
+      "updated": "2026-06-23"
+    }
+  }
+}

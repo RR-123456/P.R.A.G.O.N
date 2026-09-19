@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Maths Explorer — style reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --primary-color: #00bcd4;
+    --secondary-color: #3f51b5;
+    --text-color: #333;
+    --light-text-color: #f4f4f4;
+    --background-color: #ffffff;
+    --light-background-color: #f8f8f8;
+    --border-color: #eee;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Roboto', sans-serif; line-height: 1.6; color: var(--text-color); background-color: var(--background-color); }
+header { background-color: var(--background-color); padding: 15px 0; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.logo { font-family: 'Montserrat', sans-serif; font-size: 1.8em; font-weight: 700; color: var(--primary-color); text-decoration: none; }
+nav ul { list-style: none; display: flex; }
+nav ul li { margin-left: 30px; }
+nav ul li a { text-decoration: none; color: var(--text-color); transition: color .3s ease; }
+nav ul li a:hover { color: var(--primary-color); }
+.hero { background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); color: var(--light-text-color); text-align: center; padding: 100px 20px; }
+.hero-content h1 { font-family: 'Montserrat', sans-serif; font-size: 3.5em; margin-bottom: 20px; line-height: 1.1; }
+.btn { display: inline-block; background-color: var(--light-text-color); color: var(--primary-color); padding: 15px 30px; border-radius: 5px; text-decoration: none; font-weight: 700; transition: background-color .3s ease, color .3s ease; }
+.btn:hover { background-color: var(--text-color); color: var(--light-text-color); }
+section { padding: 60px 20px; background-color: var(--background-color); border-bottom: 1px solid var(--border-color); }
+section:nth-of-type(even) { background-color: var(--light-background-color); }
+section h2 { font-family: 'Montserrat', sans-serif; font-size: 2.5em; text-align: center; margin-bottom: 40px; color: var(--secondary-color); }
+.section-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+.card { background-color: var(--background-color); padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); text-align: center; transition: transform .3s ease; }
+.card:hover { transform: translateY(-5px); }
+.card h3 { font-family: 'Montserrat', sans-serif; font-size: 1.5em; margin-bottom: 15px; color: var(--primary-color); }
+footer { background-color: var(--text-color); color: var(--light-text-color); text-align: center; padding: 30px 20px; font-size: 0.9em; }
+</style>
+</head>
+<body>
+<header><div class="container" style="max-width:1200px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center;">
+  <a href="#" class="logo">Maths Explorer</a>
+  <nav><ul><li><a href="#home">Home</a></li><li><a href="#concepts">Concepts</a></li><li><a href="#contact">Contact</a></li></ul></nav>
+</div></header>
+<main>
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <h1>Unlock the Universe of Mathematics</h1>
+      <p style="font-size:1.3em;max-width:800px;margin:0 auto 40px;">Explore fundamental concepts, fascinating theories, and the beauty of numbers that shape our world.</p>
+      <a href="#concepts" class="btn">Start Exploring</a>
+    </div>
+  </section>
+  <section id="concepts">
+    <div class="container" style="max-width:1200px;margin:0 auto;padding:0 20px;">
+      <h2>Core Mathematical Concepts</h2>
+      <div class="section-content">
+        <div class="card"><h3>Algebra</h3><p>The study of mathematical symbols and the rules for manipulating them.</p></div>
+        <div class="card"><h3>Geometry</h3><p>Properties and relations of points, lines, surfaces, and solids.</p></div>
+        <div class="card"><h3>Calculus</h3><p>The mathematical study of continuous change.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer><p>&copy; 2023 Maths Explorer. All rights reserved.</p></footer>
+</body>
+</html>

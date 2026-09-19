@@ -1,0 +1,10 @@
+{
+  "name": "pragon-whatsup-bridge",
+  "version": "1.0.0",
+  "description": "Node sidecar for PRAGON WhatsUp (whatsapp-web.js bridge)",
+  "main": "bot.js",
+  "dependencies": {
+    "whatsapp-web.js": "^1.26.0",
+    "qrcode": "^1.5.4"
+  }
+}

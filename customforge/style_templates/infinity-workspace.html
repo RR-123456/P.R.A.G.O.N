@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<title>Infinity — style reference</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: { colors: { brand: { dark: '#05070f', card: '#0d111c', cyan: '#00f0ff', purple: '#7000ff', muted: '#8f9cae' } }, fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] } } } }
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #05070f; }
+.glow-cyan { box-shadow: 0 0 25px rgba(0, 240, 255, 0.15); }
+.glow-text { text-shadow: 0 0 15px rgba(0, 240, 255, 0.5); }
+.bg-gradient-animate { background-size: 200% 200%; animation: gradientMove 8s ease infinite; }
+@keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+</style>
+</head>
+<body class="text-gray-100 antialiased selection:bg-brand-cyan selection:text-brand-dark">
+<header class="fixed top-0 left-0 w-full z-50 bg-brand-dark/80 backdrop-blur-md border-b border-white/5">
+  <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-3 group">
+      <span class="text-xl font-extrabold tracking-wider text-white group-hover:text-brand-cyan transition-colors">INFINITY</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-8">
+      <a href="#features" class="text-sm font-medium text-brand-muted hover:text-brand-cyan transition-colors">Features</a>
+      <a href="#pricing" class="text-sm font-medium text-brand-muted hover:text-brand-cyan transition-colors">Pricing</a>
+    </nav>
+    <a href="#pricing" class="px-5 py-2.5 rounded-full text-sm font-semibold bg-brand-cyan text-brand-dark hover:bg-white transition-all shadow-lg hover:shadow-brand-cyan/20">Get Started</a>
+  </div>
+</header>
+<section class="relative min-h-screen pt-32 pb-20 flex items-center justify-center overflow-hidden">
+  <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-cyan/10 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brand-purple/10 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 mb-6">
+      <span class="w-2 h-2 rounded-full bg-brand-cyan animate-pulse"></span>
+      <span class="text-xs font-semibold tracking-wider text-brand-cyan uppercase">v2.0 Infinite Canvas Engine</span>
+    </div>
+    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-tight mb-6">
+      Limitless Ideas.<br>
+      <span class="bg-gradient-to-r from-brand-cyan via-blue-400 to-brand-purple bg-clip-text text-transparent bg-gradient-animate">Infinite Flow.</span>
+    </h1>
+    <p class="text-lg sm:text-xl text-brand-muted max-w-xl mx-auto mb-8 leading-relaxed">Break free from rigid structures. A world-first open-ended digital canvas designed to map thoughts, build systems, and design without boundaries.</p>
+    <a href="#features" class="inline-flex px-8 py-4 rounded-full text-base font-bold bg-brand-cyan text-brand-dark hover:bg-white transition-all shadow-lg shadow-brand-cyan/10">Explore Features</a>
+  </div>
+</section>
+<section id="features" class="py-24 bg-brand-card/30 border-y border-white/5">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="bg-brand-card border border-white/5 hover:border-brand-cyan/30 rounded-3xl p-8 transition-all hover:-translate-y-1">
+        <div class="w-12 h-12 rounded-2xl bg-brand-cyan/10 text-brand-cyan flex items-center justify-center mb-6"><i class="fa-solid fa-infinity text-xl"></i></div>
+        <h4 class="text-xl font-bold text-white mb-3">Infinite Zoom & Pan</h4>
+        <p class="text-brand-muted text-sm leading-relaxed">Navigate a vector space that scales endlessly.</p>
+      </div>
+      <div class="bg-brand-card border border-white/5 hover:border-brand-cyan/30 rounded-3xl p-8 transition-all hover:-translate-y-1">
+        <div class="w-12 h-12 rounded-2xl bg-brand-purple/10 text-brand-purple flex items-center justify-center mb-6"><i class="fa-solid fa-bolt text-xl"></i></div>
+        <h4 class="text-xl font-bold text-white mb-3">Sub-millisecond Sync</h4>
+        <p class="text-brand-muted text-sm leading-relaxed">Collaborate in real-time with zero lag.</p>
+      </div>
+      <div class="bg-brand-card border border-white/5 hover:border-brand-cyan/30 rounded-3xl p-8 transition-all hover:-translate-y-1">
+        <div class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center mb-6"><i class="fa-solid fa-shield-halved text-xl"></i></div>
+        <h4 class="text-xl font-bold text-white mb-3">End-to-End Encryption</h4>
+        <p class="text-brand-muted text-sm leading-relaxed">Secure your nodes with client-side keys.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<footer class="bg-brand-dark border-t border-white/5 pt-16 pb-10">
+  <div class="max-w-7xl mx-auto px-6 text-xs text-brand-muted">&copy; 2026 Infinity Technologies Inc. All rights reserved.</div>
+</footer>
+</body>
+</html>
