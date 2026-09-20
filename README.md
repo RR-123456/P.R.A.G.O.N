@@ -1,10 +1,11 @@
 Covered all four things:
 
 Gemini key format — added a check in the Installation section and the Troubleshooting table: valid keys start with AIza...; a key starting with AQ... is a different Google credential type and won't authenticate.
-Zen Mode awareness — already in place from earlier (Section 3's first-launch note plus the full Section 4 breakdown).
-WhatsApp bot npm install/run — already in place (cd pragon_whatsapp && npm install && npm start, with the QR-pairing note).
-Mandatory User Guide entry point — added a note right under the title saying this file is the canonical User Guide, so any "User Guide" button/link in the PRAGON UI should open this document rather than a separate copy.
 
+Zen Mode awareness — already in place from earlier (Section 3's first-launch note plus the full Section 4 breakdown).
+
+WhatsApp bot npm install/run — already in place (cd pragon_whatsapp && npm install && npm start, with the QR-pairing note).
+Mandatory User Guide entry point — 
 [COPILOT ARCHITECTURE.pdf](https://github.com/user-attachments/files/32413875/COPILOT.ARCHITECTURE.pdf) <--CLICK THIS TO VIEW HI DEVS COPILOT ARCHITECTURE
 <img width="1536" height="1024" alt="ChatGPT Image Sep 19, 2026, 04_31_42 PM" src="https://github.com/user-attachments/assets/ec829cc3-428f-4570-b851-8377da20799c" />
 <div align="center">
