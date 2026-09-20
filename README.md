@@ -9,7 +9,7 @@
 
 `Local-First AI` · `Sub-10ms Memory` · `Sub-500ms Voice` · `Zero Cloud Dependency Required`
 
-*Built for the people who don't get a second chance to hear "please wait" — dispatchers, medics, field engineers, and anyone else whose job doesn't pause for buffering.*
+*Built for the people who don't get a second chance to hear "please wait" — field workers,developers,content creators,tech,enthusiasist,students,dispatchers, medics, field engineers and anyone else whose job doesn't pause for buffering.*
 
 </div>
 
