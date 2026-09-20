@@ -247,7 +247,407 @@ Check CPU/RAM, manage firewall rules, browse files, or record a Macro Action onc
 
 ### 12. Let PRAGON run itself
 Connect a calendar or N8N flow for deadline tracking and crew orchestration, and receive an automatic Morning Brief each day with a Nightly Recap waiting at the end of it.
+# PRAGON User Manual
 
+**Version 1.1 — Local-First AI Operating Layer**
+
+This manual explains how to install, activate, and use every part of PRAGON day to day. It is written for the person actually using the assistant on shift, at a desk, or in the field — not for the engineering team building it.
+
+> **Integration note:** this document is the canonical PRAGON User Guide. Any "User Guide" button, menu item, or help link inside the PRAGON UI (desktop shell, Custom Forge, Agent Builder, or the phone companion app) should open this file — either by bundling it and rendering it in-app, or by linking directly to wherever it's hosted. Keeping every "User Guide" entry point pointed at this single file avoids multiple, drifting copies of the same instructions.
+
+---
+
+## Table of Contents
+
+1. [Before You Start](#1-before-you-start)
+2. [Installation](#2-installation)
+3. [First Launch & Wake Word Setup](#3-first-launch--wake-word-setup)
+4. [Understanding Operating Modes](#4-understanding-operating-modes)
+5. [Talking to PRAGON: Personas](#5-talking-to-pragon-personas)
+6. [Everyday Voice Commands](#6-everyday-voice-commands)
+7. [Reminders, Timers & Safety Alerts](#7-reminders-timers--safety-alerts)
+8. [PRAGON C.O.M.P.A.S.S — Navigation & Field Work](#8-pragon-compass--navigation--field-work)
+9. [PRAGON Gallery — Visual Lookup](#9-pragon-gallery--visual-lookup)
+10. [PRAGON Persona — Rehearsal Mode](#10-pragon-persona--rehearsal-mode)
+11. [Memory & Recall](#11-memory--recall)
+12. [Scheduling & Work Tracking](#12-scheduling--work-tracking)
+13. [WhatsApp Bridge](#13-whatsapp-bridge)
+14. [Custom Forge — Build Apps by Sketch or Description](#14-custom-forge--build-apps-by-sketch-or-description)
+15. [Agent Builder — Visual Automation Canvas](#15-agent-builder--visual-automation-canvas)
+16. [PRAGON Pulse — Visual & Creative Engine](#16-pragon-pulse--visual--creative-engine)
+17. [Automation & Daily Briefs](#17-automation--daily-briefs)
+18. [Desktop Control & Macro Actions](#18-desktop-control--macro-actions)
+19. [Working Offline](#19-working-offline)
+20. [Privacy & Safety Guidelines](#20-privacy--safety-guidelines)
+21. [Troubleshooting](#21-troubleshooting)
+22. [Frequently Asked Questions](#22-frequently-asked-questions)
+23. [Quick Reference: Voice Command Cheat Sheet](#23-quick-reference-voice-command-cheat-sheet)
+24. [Glossary](#24-glossary)
+
+---
+
+## 1. Before You Start
+
+PRAGON is a local-first AI assistant: most of what it does — remembering context, retrieving your documents, running voice commands — happens on your own machine rather than in the cloud. That means it stays fast and functional even with no internet connection, and your data does not need to leave your device to be useful.
+
+**What you need:**
+- A workstation or laptop running the PRAGON platform (Python 3.10+)
+- A microphone for voice interaction
+- (Recommended, not required) [Ollama](https://ollama.com) installed locally, so PRAGON can fall back to a local model if you lose internet access
+
+**What you get:**
+- A single assistant that handles voice conversation, memory, navigation, scheduling, automation, and app building
+- A wake-word-gated voice interface, so nothing runs by accident
+- Two operating modes — a calm default mode and an explicit administrative mode — so sensitive actions are never one accidental word away
+
+---
+
+## 2. Installation
+
+1. Obtain the PRAGON repository and open a terminal in its root folder.
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Copy the example API key file and fill in your own credentials:
+   ```bash
+   cp api/api_keys.json.example api/api_keys.json
+   ```
+   Open `api/api_keys.json` and add your model API key and LiveKit credentials.
+
+   **Key format check:** a valid Gemini API key starts with **`AIza...`**. A key starting with **`AQ...`** is not a Gemini API key — it's a different Google credential type (for example, an OAuth access token) and will not work here. If PRAGON's cloud model calls are failing with an authentication error, the first thing to check is that the string in `api_keys.json` actually begins with `AIza`.
+4. If you plan to use Custom Forge's RAG system or the Agent Builder, install their additional dependencies from the `requirements.txt` files inside `ragsystem/` and `customforge/agent_builder/`.
+
+---
+
+## 3. First Launch & Wake Word Setup
+
+1. Start the assistant with memory enabled:
+   ```bash
+   python run_pragon_moss.py
+   ```
+2. Wait for the runtime to confirm that MOSS (the memory engine) has initialized.
+3. Speak the wake word: **"Hey JARVIS."** PRAGON will not respond to anything you say before this phrase — this is intentional, and it is the single most important safety feature in the system. There is no way to disable wake-word gating from a casual voice command.
+4. Once activated, speak naturally. PRAGON automatically detects the language you are speaking in, including Tamil, and will respond in kind.
+
+**A note for first-time users:** the moment PRAGON starts, it is already running in **Zen Mode** — its default, restricted, everyday-safe mode. You don't need to turn this on or configure it; nobody has to know about it in advance for it to protect them. It simply means that, from your very first conversation, PRAGON will handle everyday requests but will not touch your desktop, files, or system settings until you deliberately ask for that with the Master Control phrase covered in [Section 4](#4-understanding-operating-modes). If this is your first session, it's worth reading that section before you go further, so you know what to expect as normal behavior versus what requires an extra step.
+
+If voice activation does not appear to be working, see [Troubleshooting](#21-troubleshooting).
+
+---
+
+## 4. Understanding Operating Modes
+
+PRAGON runs in one of two modes at any time:
+
+### Zen Mode (default)
+
+Zen Mode is the state PRAGON is in from the moment it starts, and the state it returns to unless you deliberately escalate. It exists to keep the assistant calm, predictable, and safe for continuous everyday use, without anyone — including an admin — having to think about it.
+
+**What Zen Mode allows:**
+- Voice utilities (weather, messages, media playback, system status checks)
+- Reminders, timers, and safety alerts
+- Navigation and field data logging through C.O.M.P.A.S.S
+- Memory recall through MOSS
+- Scheduling and task-checklist updates
+- Persona switching and PRAGON Persona rehearsal
+- Gallery lookups and WhatsApp bridge notifications
+
+**What Zen Mode blocks:**
+- Desktop and file-system control
+- Firewall or system-settings changes
+- Recording or replaying Macro Actions
+- Any action tagged as administrative in PRAGON's tool permissions
+
+**Why it exists:** most of a shift, a call, or a session is made up of low-risk, repeatable actions — not the kind of thing that should ever require a special unlock. By keeping those actions unrestricted while walling off anything that touches the underlying system, PRAGON stays genuinely hands-free for the 95% of interactions that are routine, while making the remaining 5% deliberate. Nobody, including an administrator, can casually drift out of Zen Mode by accident — reaching Master Control always requires the explicit phrase below, spoken on purpose.
+
+**Returning to Zen Mode:** once you finish an administrative task in Master Control, PRAGON returns to Zen Mode automatically after a short idle period, or immediately if you say "Back to Zen Mode." Keeping sessions in Zen Mode by default is the safest posture for day-to-day use.
+
+### Master Control
+- Reached only by saying: **"PRAGON DADDY HOME."**
+- Unlocks administrative and system-level actions (desktop control, firewall changes, macro recording, deeper automation configuration).
+- Exiting back to Zen Mode is recommended once your administrative task is done, to keep day-to-day use as safe as possible.
+
+**Why two modes?** Separating "everyday assistant" from "administrative control" means a misheard word or background noise cannot trigger something sensitive. You always have to mean it.
+
+---
+
+## 5. Talking to PRAGON: Personas
+
+PRAGON ships with four selectable voice personalities:
+
+| Persona | Best for |
+|---|---|
+| JARVIS (default) | General-purpose daily use |
+| Friday | An alternate conversational tone |
+| Ghost | A more direct, technical tone |
+| Omnics | A distinct alternate personality |
+
+**To switch:** say "Switch to Friday," "Talk to me as Ghost," or name any available persona directly. The change applies immediately, mid-conversation, and stays until you switch again or restart.
+
+---
+
+## 6. Everyday Voice Commands
+
+Once activated with the wake word, you can ask PRAGON to:
+
+- Check the weather: *"What's the weather like today?"*
+- Send a message: *"Send a message to [contact name]."*
+- Play media: *"Play [video name] on YouTube."*
+- Check system health: *"How's my system doing?"* or *"What's my RAM usage?"*
+
+All of the above work in whichever language you speak — PRAGON detects it automatically, so you don't need to set a language preference manually.
+
+---
+
+## 7. Reminders, Timers & Safety Alerts
+
+PRAGON can set voice-triggered reminders and timers for anything time-based:
+
+- Medication: *"Remind me to take my medication at 3pm."*
+- Breaks: *"Remind me to take a break in an hour."*
+- Safety gear: *"Remind me to wear my helmet before I start"* or *"Remind me to put on my gloves."*
+- Timers: *"Set a timer for 20 minutes."*
+- Stopwatch: *"Start a stopwatch."*
+
+These reminders persist through PRAGON's memory layer, so they will still fire even if you've moved on to a different task or conversation.
+
+---
+
+## 8. PRAGON C.O.M.P.A.S.S — Navigation & Field Work
+
+C.O.M.P.A.S.S handles anything location- or route-related:
+
+- **Get a route:** *"Route me to the next delivery point."*
+- **Trace a location:** *"Log my current location."*
+- **Track a delivery:** *"Where's package [ID]?"*
+- **Collect field data:** *"Log this site's readings"* or describe the data point you want recorded; PRAGON stores it against the current job/location context.
+
+This is designed for hands-busy situations — you don't need to open a separate maps app or type anything.
+
+---
+
+## 9. PRAGON Gallery — Visual Lookup
+
+Gallery stores both AI-generated images and company tool/asset photos, and lets you retrieve them by voice or text:
+
+- *"Show me the spanner."*
+- *"Find the tool image for the compressor."*
+- *"Save this image to the gallery"* (after PRAGON generates or receives one).
+
+Anything PRAGON generates elsewhere in the system (Custom Forge previews, PRAGON Pulse renders) is automatically archived here for later lookup.
+
+---
+
+## 10. PRAGON Persona — Rehearsal Mode
+
+Distinct from the four conversational personas in Section 5, **PRAGON Persona** is a dedicated rehearsal environment — most commonly used for sales practice:
+
+1. Say *"Start a Persona rehearsal."*
+2. Choose a tone (e.g. formal, friendly, assertive) and a language.
+3. Run through your pitch or conversation out loud; PRAGON responds in character to give you a realistic practice partner.
+4. Switch tone or language at any point mid-session without restarting.
+
+---
+
+## 11. Memory & Recall
+
+PRAGON's memory is powered by **MOSS**, backed by a local SQLite timeline database and a ChromaDB vector store. This is what lets you ask about anything from a past session conversationally:
+
+- *"What did I log last Tuesday?"*
+- *"What did we discuss about the compressor last month?"*
+- *"Remind me what my last shift's checklist looked like."*
+
+Retrieval happens on-device, which is why it can return an answer in a fraction of a second rather than waiting on a network round-trip.
+
+---
+
+## 12. Scheduling & Work Tracking
+
+For teams and shift-based work:
+
+- Each worker receives a **per-shift task checklist**.
+- Completing or updating a task through voice or the UI syncs automatically back to a company-side dashboard.
+- Managers can review live status across a crew without needing to check in individually.
+
+---
+
+## 13. WhatsApp Bridge
+
+When you can't access voice or desktop directly:
+
+1. Enable the WhatsApp bridge from PRAGON's settings.
+2. You will begin receiving PRAGON notifications over WhatsApp.
+3. You can reply with simple text commands, which PRAGON interprets the same way it would a voice command.
+
+This is designed as a fallback channel, not a replacement for voice — use it when your hands or environment don't allow for either.
+
+### Running the WhatsApp bridge (Node service)
+
+The WhatsApp bridge (`pragon_whatsapp/`) is a Node.js component rather than a Python one, since it's built on the **WhatsApp Node Bridge**. It runs as its own process alongside the main PRAGON runtime rather than through `pragon_main.py`. The typical Node workflow is:
+
+```bash
+cd pragon_whatsapp
+npm install
+npm start
+```
+
+If `npm start` isn't defined in that folder's `package.json`, check the `scripts` block for the correct entry — a bridge like this is commonly launched with `npm run start`, `npm run bridge`, or by running its entry file directly, e.g. `node index.js`. On first run, most WhatsApp bridge libraries display a QR code in the terminal that you scan from your phone's WhatsApp app (Linked Devices) to authorize the connection — after that, the pairing persists across restarts.
+
+Once the Node process is running and paired, re-enable the bridge from PRAGON's settings as in step 1 above so the two sides connect.
+
+*Note: the exact npm script name depends on `pragon_whatsapp/package.json`, which isn't included in the architecture document this manual was built from — if `npm start` doesn't work, open that file and use whichever script it defines for launching the bridge.*
+
+---
+
+## 14. Custom Forge — Build Apps by Sketch or Description
+
+Custom Forge turns an idea into a working single-file app (HTML/JS/CSS) without requiring a development environment.
+
+**Steps:**
+1. Open the Forge UI at `http://127.0.0.1:5000`.
+2. Either sketch a rough layout on the drawing pad, or write a short brief describing the app you want.
+3. PRAGON generates the app live. If your primary model provider is unavailable, it automatically falls back across providers, down to a local Ollama model, so generation still completes.
+4. Use the built-in code editor to review, edit, save, or export the result. Undo/redo is available at every step.
+5. If PRAGON's generated code has an error, ask it to fix the error directly — it will diagnose and patch the code in place.
+
+Custom Forge also supports general website-creation workflows, not just single-purpose tools.
+
+---
+
+## 15. Agent Builder — Visual Automation Canvas
+
+Agent Builder is for wiring up autonomous, multi-step agent behavior without writing code.
+
+**Steps:**
+1. Open the Agent Builder UI at `http://127.0.0.1:5057` (it runs independently of the main PRAGON process).
+2. Drag tool and agent nodes onto the canvas.
+3. Connect them to define a ReAct-style flow: the agent reasons about what to do, calls a tool, observes the result, and decides the next step.
+4. Agent Builder runs Ollama-first, with a cloud model as backup, so most workflows can execute fully offline.
+
+---
+
+## 16. PRAGON Pulse — Visual & Creative Engine
+
+Pulse handles generative visuals and 3D content:
+
+- Generate images or 3D models from a description.
+- View particle-based visual effects (built on Three.js).
+- Use face-mesh tracking and AR-style viewing for design work.
+- Anything generated here is automatically saved to PRAGON Gallery (Section 9).
+
+---
+
+## 17. Automation & Daily Briefs
+
+Connect PRAGON to your existing calendar or an N8N workflow to unlock:
+
+- **Deadline management** — PRAGON tracks and reminds you of upcoming deadlines.
+- **Crew orchestration** — coordinate multiple workers' schedules against shared deadlines.
+- **GitHub monitoring** — get notified of relevant repository activity.
+- **Morning Brief** — an automatic daily summary of your schedule, tasks, and relevant updates.
+- **Nightly Recap** — an end-of-day summary of what was completed and what's outstanding.
+
+---
+
+## 18. Desktop Control & Macro Actions
+
+Available once you're in Master Control mode (Section 4):
+
+- Check CPU and RAM usage: *"How's my system doing?"*
+- Adjust firewall settings or access specific files by voice.
+- **Record a Macro Action:** perform a repetitive multi-step task once while PRAGON records it, then say a trigger phrase any time afterward to replay the entire sequence automatically.
+
+Because these actions touch your actual system, they are deliberately gated behind Master Control rather than available in Zen Mode.
+
+---
+
+## 19. Working Offline
+
+If your internet connection drops, PRAGON is designed to keep functioning:
+
+- Voice and conversational features fall back automatically to a local model (Ollama, Llama 3.1) rather than failing outright.
+- Memory and retrieval (MOSS) never depended on the cloud in the first place — they run on your local SQLite and ChromaDB stores.
+- Custom Forge and Agent Builder both have local-model fallback chains built in, so app generation and automation workflows can continue with reduced (but functional) capability.
+
+You should notice a change in responsiveness, not a hard failure, when connectivity is lost.
+
+---
+
+## 20. Privacy & Safety Guidelines
+
+- PRAGON is local-first by design: sensitive data does not need to leave your device to be useful.
+- Wake-word gating means no command executes without deliberate activation — be mindful that background conversations containing the wake word could still trigger a response, so mute or disable the microphone in sensitive settings if needed.
+- Master Control actions (desktop/system changes, macros, firewall edits) can affect your machine directly — only escalate to Master Control when you intend to make that kind of change, and return to Zen Mode afterward.
+- Generated code (from Custom Forge or Agent Builder) runs in an isolated sandbox rather than directly against your system, but you should still review generated scripts before running them outside that sandbox.
+
+---
+
+## 21. Troubleshooting
+
+| Symptom | Likely cause | What to try |
+|---|---|---|
+| PRAGON doesn't respond to the wake word | Microphone not detected, or wake-word engine not running | Check microphone permissions; restart `run_pragon_moss.py` |
+| Voice responses feel slow | Cloud model provider unreachable and Ollama not installed | Install Ollama locally so PRAGON can fall back automatically |
+| Memory recall returns nothing | MOSS database not yet populated, or `PRAGON_MOSS` disabled | Confirm `PRAGON_MOSS=1` is set; give it a session or two to build context |
+| Custom Forge generation fails | All model providers (cloud and local) unreachable | Verify API keys in `api/api_keys.json` and that Ollama is running |
+| Cloud model calls return an authentication error | Wrong key type in `api_keys.json` | Confirm the key starts with `AIza` (valid Gemini key format) — a key starting with `AQ` is a different credential type and will not authenticate |
+| Master Control won't activate | Escalation phrase not recognized | Speak clearly: "PRAGON DADDY HOME," with the wake word first |
+| WhatsApp bridge not receiving messages | Bridge not enabled, or WhatsApp node not connected | Re-enable the bridge in settings and confirm the WhatsApp module is running |
+
+---
+
+## 22. Frequently Asked Questions
+
+**Does PRAGON need an internet connection to work?**
+No. Voice, memory, and most tools are designed to run locally, with cloud models used only as an optional performance boost when available.
+
+**Can PRAGON accidentally take an action I didn't ask for?**
+Every action requires the wake word first, and system-level actions require the additional Master Control escalation phrase. This two-step gate is designed specifically to prevent accidental activation.
+
+**What languages does PRAGON support?**
+Language is auto-detected rather than fixed to a single setting, and includes regional languages such as Tamil across voice interaction, personas, and Persona rehearsal mode.
+
+**Where do my reminders, logs, and past conversations live?**
+Locally, in PRAGON's SQLite timeline database and ChromaDB vector store, managed exclusively through the Persistence Service.
+
+**Can non-technical team members use Custom Forge and Agent Builder?**
+Yes — both are designed as visual, description-driven tools. No coding knowledge is required to get a working result, though the code editor is available if you want to refine it further.
+
+---
+
+## 23. Quick Reference: Voice Command Cheat Sheet
+
+| Say this | To do this |
+|---|---|
+| "Hey JARVIS" | Activate voice control |
+| "PRAGON DADDY HOME" | Escalate to Master Control |
+| "Back to Zen Mode" | Return to the default, restricted mode |
+| "Switch to Friday / Ghost / Omnics" | Change persona |
+| "What's the weather?" | Get a weather update |
+| "Send a message to [name]" | Send a message |
+| "Remind me to [task] at [time]" | Set a reminder |
+| "Set a timer for [duration]" | Start a timer |
+| "Route me to [destination]" | Get navigation directions |
+| "Show me [tool/item]" | Retrieve a Gallery image |
+| "What did I log [timeframe]?" | Recall from memory |
+| "Start a Persona rehearsal" | Begin sales/tone rehearsal |
+| "How's my system doing?" | Check CPU/RAM status |
+| "Record a macro" | Begin recording a Macro Action |
+
+---
+
+## 24. Glossary
+
+- **MOSS** — Modular Operating Smart System; PRAGON's sub-10ms context retrieval and memory engine.
+- **Zen Mode** — PRAGON's default, restricted operating mode.
+- **Master Control** — the elevated, administrative mode reached via an explicit escalation phrase.
+- **Wake word** — the phrase ("Hey JARVIS") required before any command is processed.
+- **Persona** — a selectable conversational voice/personality (JARVIS, Friday, Ghost, Omnics).
+- **PRAGON Persona** — the dedicated rehearsal mode, distinct from the conversational personas above.
+- **RAG (Retrieval-Augmented Generation)** — PRAGON's offline document search system, backed by ChromaDB.
+- **Macro Action** — a recorded sequence of system actions that can be replayed with a single voice command.
+- **Persistence Service** — the single gatekeeper through which all database and vector-store access happens.
 ---
 
 ## Architecture
