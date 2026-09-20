@@ -1,10 +1,10 @@
 IMPORTANT NOTE:
 
-Gemini key format — added a check in the Installation section and the Troubleshooting table: valid keys start with AIza...; a key starting with AQ... is a different Google credential type and won't authenticate.
+1.Gemini key format — added a check in the Installation section and the Troubleshooting table: valid keys start with AIza...; a key starting with AQ... is a different Google credential type and won't authenticate.
 
-Zen Mode awareness — already in place from earlier (Section 3's first-launch note plus the full Section 4 breakdown).
+2.Zen Mode awareness — already in place from earlier (Section 3's first-launch note plus the full Section 4 breakdown).
 
-WhatsApp bot npm install/run — already in place (cd pragon_whatsapp && npm install && npm start, with the QR-pairing note).
+3.WhatsApp bot npm install/run — already in place (cd pragon_whatsapp && npm install && npm start, with the QR-pairing note).
 Mandatory User Guide entry point — 
 
 [COPILOT ARCHITECTURE.pdf](https://github.com/user-attachments/files/32413875/COPILOT.ARCHITECTURE.pdf) <--CLICK THIS TO VIEW HI DEVS COPILOT ARCHITECTURE
